@@ -114,7 +114,7 @@
                         </p>
                     </div>
 
-                    <!-- 4. 다단 헤더 및 4방향 틀고정 -->
+                    <!-- 4. 멀티헤더 및 4방향 틀고정 -->
                     <div
                         class="flex flex-col gap-2.5 p-5 rounded-xl border bg-[var(--card-bg)] border-[var(--card-border)] shadow-xs transition-all hover:border-blue-500/50 hover:shadow-md"
                     >
@@ -125,7 +125,7 @@
                                 📐
                             </div>
                             <div class="flex flex-col">
-                                <h4 class="text-sm font-bold text-[var(--text-title)] m-0">다단 헤더 및 틀고정</h4>
+                                <h4 class="text-sm font-bold text-[var(--text-title)] m-0">멀티헤더 및 틀고정</h4>
                                 <span class="text-[10px] text-slate-400 font-mono">Multi-Level Headers & Pinning</span>
                             </div>
                         </div>
@@ -339,7 +339,7 @@
                         <tbody class="divide-y divide-[var(--card-border)] text-[var(--app-text)]">
                             <tr>
                                 <td class="p-3.5 font-bold text-blue-600 dark:text-sky-400">컬럼(열) 제어</td>
-                                <td class="p-3.5 font-semibold">다단 헤더 & 좌우 틀고정</td>
+                                <td class="p-3.5 font-semibold">멀티헤더 & 좌우 틀고정</td>
                                 <td class="p-3.5 text-[var(--text-desc)] leading-relaxed">
                                     2단 이상의 계층 헤더 그룹화, 좌측 주요 식별자 열 및 우측 상태 관리 열 동시 고정,
                                     콘텐츠 자동 너비(Auto-fit) 및 열 순서 변경
@@ -405,8 +405,8 @@ const demoCards: DemoCard[] = [
         badge: '데모 01',
         title: '기본 그리드 (4방향 틀고정)',
         description:
-            '2단 다단 헤더와 상단 긴급행(2행), 하단 합계행(1행), 좌측 2열, 우측 1열의 4방향 동시 틀고정 및 3종 테마 전환을 시연합니다.',
-        tags: ['다단 헤더', '4방향 틀고정', '제브라 스트라이프', '엑셀 내보내기'],
+            '멀티헤더와 상단 긴급행(2행), 하단 합계행(1행), 좌측 2열, 우측 1열의 4방향 동시 틀고정 및 3종 테마 전환을 시연합니다.',
+        tags: ['멀티헤더', '4방향 틀고정', '제브라 스트라이프', '엑셀 내보내기'],
         ready: true
     },
     {

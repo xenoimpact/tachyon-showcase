@@ -1,7 +1,7 @@
 import type {GridColumnDef} from './types/column';
 
 /**
- * 화면 1: 기본 그리드용 컬럼 정의 (2단 다단 헤더, 좌측 열 고정, 상태 배지, 숫자 콤마)
+ * 화면 1: 기본 그리드용 컬럼 정의 (멀티헤더, 좌측 열 고정, 상태 배지, 숫자 콤마)
  */
 export const basicGridColumns: GridColumnDef[] = [
     {field: 'id', headerName: '주문번호', width: 130, pinned: 'left', align: 'center', sortable: true},

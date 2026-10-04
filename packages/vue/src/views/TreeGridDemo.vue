@@ -118,7 +118,7 @@
             :styles="gridStyles"
             class="w-full h-full"
         >
-            <!-- 1그룹: 조직 및 과제 식별 (다단 헤더 - 기본 배경) -->
+            <!-- 1그룹: 조직 및 과제 식별 (멀티헤더 - 기본 배경) -->
             <TachyonColumn header-text="조직 및 과제 식별">
                 <!-- 박스 모드: item-renderer 배제하여 타키온 내장 역 'ㄱ'자 크로스 셀 전용 템플릿 사용 -->
                 <TachyonTreeColumn
@@ -144,7 +144,7 @@
                 <TachyonColumn data-field="category" header-text="구분" :width="110" :styles="{textAlign: 'center'}" />
             </TachyonColumn>
 
-            <!-- 2그룹: 관리 책임 (다단 헤더 - 은은한 슬레이트 틴트) -->
+            <!-- 2그룹: 관리 책임 (멀티헤더 - 은은한 슬레이트 틴트) -->
             <TachyonColumn header-text="관리 책임">
                 <TachyonColumn
                     data-field="manager"
@@ -154,7 +154,7 @@
                 />
             </TachyonColumn>
 
-            <!-- 3그룹: 예산 및 집행 현황 (다단 헤더 - 세련된 스카이블루 틴트) -->
+            <!-- 3그룹: 예산 및 집행 현황 (멀티헤더 - 세련된 스카이블루 틴트) -->
             <TachyonColumn header-text="예산 및 집행 현황">
                 <TachyonNumberColumn
                     data-field="budget"
@@ -179,7 +179,7 @@
                 />
             </TachyonColumn>
 
-            <!-- 4그룹: 상태 관리 (다단 헤더 - 은은한 에메랄드 틴트) -->
+            <!-- 4그룹: 상태 관리 (멀티헤더 - 은은한 에메랄드 틴트) -->
             <TachyonColumn header-text="상태 관리">
                 <TachyonColumn
                     data-field="status"

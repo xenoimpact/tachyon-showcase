@@ -1,7 +1,7 @@
 <template>
     <DemoContainer
         title="기본 그리드 (상·하·좌·우 4방향 고정)"
-        description="스크롤 중에도 기준 정보와 합계 요약이 유지되도록 다단 헤더 및 상·하·좌·우 틀고정을 제공합니다."
+        description="스크롤 중에도 기준 정보와 합계 요약이 유지되도록 멀티헤더 및 상·하·좌·우 틀고정을 제공합니다."
     >
         <!-- 데이터 요약 통계 슬롯 (4종 KPI 대시보드 - Tailwind + CSS 하이브리드) -->
         <template #stats>
@@ -119,7 +119,7 @@
             />
             <TachyonColumn data-field="customer" header-text="고객사명" :width="160" sortable />
 
-            <!-- 2단 다단 헤더: 프로젝트 정보 -->
+            <!-- 멀티헤더: 프로젝트 정보 -->
             <TachyonColumn header-text="프로젝트 정보">
                 <TachyonColumn data-field="projectName" header-text="프로젝트/품목명" :width="320" sortable />
                 <TachyonColumn
@@ -132,7 +132,7 @@
                 <TachyonColumn data-field="department" header-text="담당부서" :width="160" sortable />
             </TachyonColumn>
 
-            <!-- 2단 다단 헤더: 금액 및 수량 (VAT 포함) + 숫자 콤마 표시 -->
+            <!-- 멀티헤더: 금액 및 수량 (VAT 포함) + 숫자 콤마 표시 -->
             <TachyonColumn header-text="금액 및 수량 (VAT 포함)">
                 <TachyonNumberColumn
                     data-field="quantity"
