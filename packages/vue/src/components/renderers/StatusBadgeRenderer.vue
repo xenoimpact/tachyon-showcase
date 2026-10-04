@@ -2,7 +2,7 @@
     <div class="status-badge-wrapper">
         <span class="status-badge" :class="badgeClass">
             <span class="status-dot"></span>
-            {{ text }}
+            {{ displayText }}
         </span>
     </div>
 </template>
@@ -49,22 +49,43 @@ export default defineComponent({
             return '';
         });
 
+        const displayText = computed(() => {
+            const val = text.value;
+            if (val === '상승') {
+                return '▲ 상승';
+            }
+            if (val === '하강') {
+                return '▼ 하강';
+            }
+            if (val === '보합') {
+                return '― 보합';
+            }
+            return val;
+        });
+
         const badgeClass = computed(() => {
             const val = text.value;
             switch (val) {
-                case '완료': {
+                case '우수':
+                case '완료':
+                case '검수완료':
+                case '상승': {
                     return 'badge--success';
                 }
+                case '양호':
                 case '진행중': {
                     return 'badge--primary';
                 }
-                case '검수중': {
-                    return 'badge--warning';
-                }
-                case '대기': {
+                case '검수중':
+                case '준비중':
+                case '보류':
+                case '보합': {
                     return 'badge--neutral';
                 }
-                case '취소': {
+                case '경고':
+                case '지연':
+                case '취소':
+                case '하강': {
                     return 'badge--danger';
                 }
                 default: {
@@ -76,6 +97,7 @@ export default defineComponent({
         return {
             state,
             text,
+            displayText,
             badgeClass,
             setState
         };

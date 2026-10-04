@@ -108,6 +108,7 @@
             :styles="gridStyles"
             class="w-full h-full"
         >
+            <TachyonCheckColumn></TachyonCheckColumn>
             <!-- 좌측 열 고정 대상 (주문번호, 고객사명) -->
             <TachyonColumn
                 data-field="id"
@@ -222,6 +223,7 @@ import StatusBadgeRenderer from '@/components/renderers/StatusBadgeRenderer.vue'
 import ExportXlsx from '@/config/tachyon/addons/xlsx/export';
 import DemoContainer from '@/components/common/DemoContainer.vue';
 import {useThemeStore} from '@/stores/themeStore';
+import TachyonCheckColumn from '@/config/tachyon/columns/TachyonCheckColumn';
 
 const themeStore = useThemeStore();
 const gridRef = useTemplateRef<any>('gridRef');
@@ -462,11 +464,11 @@ function toggleDirection(dir: 'left' | 'right' | 'top' | 'bottom'): void {
  * 현재 그리드 상태와 데이터를 스프레드시트(xlsx) 파일로 내보냅니다.
  */
 async function exportToExcel(): Promise<void> {
-    const nativeGrid = gridRef.value?.nativeInstance || gridRef.value?.grid || gridRef.value;
-    if (nativeGrid) {
-        await ExportXlsx.export.call(nativeGrid, '기본그리드_주문현황.xlsx');
+    const exportAddon = gridRef.value?.getAddon('export');
+    if (exportAddon) {
+        await exportAddon.export('기본그리드_주문현황.xlsx');
     } else {
-        console.warn('그리드 인스턴스를 찾을 수 없습니다.');
+        console.warn('export 애드온을 찾을 수 없습니다.');
     }
 }
 </script>

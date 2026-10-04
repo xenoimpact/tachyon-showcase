@@ -5,35 +5,54 @@
     >
         <!-- 상단 글로벌 헤더 -->
         <header
-            class="flex justify-between items-center px-7 py-3.5 bg-slate-900 text-white border-b border-slate-800 shrink-0"
+            class="flex justify-between items-center px-7 py-3 border-b shrink-0 transition-colors duration-200"
+            :class="
+                themeStore.currentTheme === 'default'
+                    ? 'bg-white text-slate-900 border-slate-200/90'
+                    : 'bg-slate-900 text-white border-slate-800'
+            "
         >
             <div class="flex items-center gap-4">
                 <div
-                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 shadow-md shadow-blue-600/30"
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 shadow-md shadow-blue-600/25 text-white"
                 >
                     <span class="text-base leading-none">⚡</span>
                     <span class="font-extrabold text-base tracking-wide">Tachyon</span>
                 </div>
                 <div class="flex flex-col gap-0.5">
-                    <h1 class="text-lg font-bold tracking-tight m-0 leading-tight">UI Grid Showcase</h1>
-                    <span class="text-xs text-slate-400"
-                        >대용량 데이터를 지원하는 가상 스크롤 & 엔터프라이즈 데이터 그리드</span
+                    <h1 class="text-base font-bold tracking-tight m-0 leading-tight">UI Grid Showcase</h1>
+                    <span
+                        class="text-xs transition-colors"
+                        :class="themeStore.currentTheme === 'default' ? 'text-slate-500' : 'text-slate-400'"
                     >
+                        대용량 데이터를 지원하는 가상 스크롤 & 엔터프라이즈 데이터 그리드
+                    </span>
                 </div>
             </div>
 
             <div class="flex items-center gap-2.5">
                 <!-- 글로벌 테마 전환 컨트롤러 -->
-                <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg p-0.5 gap-0.5">
+                <div
+                    class="flex items-center rounded-lg p-0.5 gap-0.5 transition-colors"
+                    :class="
+                        themeStore.currentTheme === 'default'
+                            ? 'bg-slate-100 border border-slate-200/90'
+                            : 'bg-slate-800 border border-slate-700'
+                    "
+                >
                     <button
                         v-for="t in themeStore.themeOptions"
                         :key="t.id"
-                        class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md transition-all duration-150 cursor-pointer border-none"
-                        :class="
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-all duration-150 cursor-pointer border-none"
+                        :class="[
                             themeStore.currentTheme === t.id
-                                ? 'bg-slate-700 text-sky-400 shadow-xs'
-                                : 'bg-transparent text-slate-400 hover:text-white'
-                        "
+                                ? themeStore.currentTheme === 'default'
+                                    ? 'bg-white text-blue-600 shadow-xs font-bold'
+                                    : 'bg-slate-700 text-sky-400 shadow-xs font-bold'
+                                : themeStore.currentTheme === 'default'
+                                  ? 'bg-transparent text-slate-600 hover:text-slate-900'
+                                  : 'bg-transparent text-slate-400 hover:text-white',
+                        ]"
                         type="button"
                         :title="t.label + ' 테마로 전환'"
                         @click="themeStore.setTheme(t.id)"
@@ -100,9 +119,12 @@
 <script setup lang="ts">
 import {computed, ref, type Component} from 'vue';
 import {useThemeStore} from '@/stores/themeStore';
+import IntroductionView from '@/views/IntroductionView.vue';
 import BasicGridDemo from '@/views/BasicGridDemo.vue';
 import VirtualScrollDemo from '@/views/VirtualScrollDemo.vue';
 import CellEditorDemo from '@/views/CellEditorDemo.vue';
+import CellVisualDemo from '@/views/CellVisualDemo.vue';
+import TreeGridDemo from '@/views/TreeGridDemo.vue';
 import DemoPlaceholder from '@/components/common/DemoPlaceholder.vue';
 
 interface MenuItem {
@@ -113,16 +135,18 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-    {id: 'basic', index: '01', name: '기본 그리드 (다단 헤더 & 고정)', component: BasicGridDemo},
-    {id: 'virtual', index: '02', name: '대용량 가상 스크롤 (50만 건)', component: VirtualScrollDemo},
+    {id: 'intro', index: '00', name: '제품 개요 및 기능 가이드', component: IntroductionView},
+    {id: 'basic', index: '01', name: '기본 그리드 (멀티헤더 & 고정)', component: BasicGridDemo},
+    {id: 'virtual', index: '02', name: '대용량 가상 스크롤', component: VirtualScrollDemo},
     {id: 'editor', index: '03', name: '엑셀형 셀 에디터 & 연동', component: CellEditorDemo},
-    {id: 'visual', index: '04', name: '셀 시각화 (스파크라인 & 히트맵)'},
-    {id: 'tree', index: '05', name: '계층형 트리 그리드'}
+    {id: 'visual', index: '04', name: '셀 시각화', component: CellVisualDemo},
+    {id: 'tree', index: '05', name: '계층형 트리 그리드', component: TreeGridDemo},
+    {id: 'realtime', index: '06', name: '실시간 데이터 갱신'}
 ];
 
 const themeStore = useThemeStore();
 
-const activeMenu = ref<string>('basic');
+const activeMenu = ref<string>('intro');
 
 const currentMenu = computed<MenuItem | undefined>(() => {
     return menuItems.find((m) => m.id === activeMenu.value);

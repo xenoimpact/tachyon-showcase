@@ -44,3 +44,4 @@ ehthumbs.db
 *.tmp
 *.temp
 
+.agents/issues/tachyon-core-and-vue-issues.md

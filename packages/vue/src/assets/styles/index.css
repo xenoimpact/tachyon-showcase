@@ -3,5 +3,7 @@
  */
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *, [data-theme='steel-blue'], [data-theme='steel-blue'] *));
+
 @import './themes.css';
 

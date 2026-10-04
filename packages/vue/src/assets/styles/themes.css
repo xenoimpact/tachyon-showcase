@@ -29,10 +29,14 @@
     /* 데모 컨테이너 카드 */
     --card-bg: #ffffff;
     --card-border: #e2e8f0;
+    --toolbar-bg: #f8fafc;
     --text-title: #0f172a;
     --text-desc: #64748b;
     --grid-card-bg: #ffffff;
     --grid-card-border: #e2e8f0;
+    --grid-header-bg: #f8fafc;
+    --grid-header-border: #e2e8f0;
+    --grid-header-text: #334155;
 
     /* 배지 & 태그 */
     --badge-bg: #0f172a;
@@ -43,17 +47,17 @@
     --tag-border: #bfdbfe;
 
     /* 통계 알약 (Stat Pill) */
-    --stat-bg: #f8fafc;
+    --stat-bg: #ffffff;
     --stat-border: #e2e8f0;
-    --stat-label: #94a3b8;
-    --stat-value: #1e293b;
+    --stat-label: #64748b;
+    --stat-value: #0f172a;
 
     /* 아웃라인 버튼 */
     --btn-outline-bg: #ffffff;
-    --btn-outline-border: #cbd5e1;
+    --btn-outline-border: #e2e8f0;
     --btn-outline-text: #334155;
-    --btn-outline-hover-bg: #f8fafc;
-    --btn-outline-hover-border: #94a3b8;
+    --btn-outline-hover-bg: #f1f5f9;
+    --btn-outline-hover-border: #cbd5e1;
 }
 
 /* ==========================================================================
@@ -82,10 +86,14 @@
     /* 데모 컨테이너 카드 */
     --card-bg: #1e293b;
     --card-border: #334155;
+    --toolbar-bg: #0b1329;
     --text-title: #f8fafc;
     --text-desc: #94a3b8;
     --grid-card-bg: #0f172a;
     --grid-card-border: #334155;
+    --grid-header-bg: #1e293b;
+    --grid-header-border: #334155;
+    --grid-header-text: #f1f5f9;
 
     /* 배지 & 태그 */
     --badge-bg: #0f172a;
@@ -96,7 +104,7 @@
     --tag-border: #1e3a8a;
 
     /* 통계 알약 (Stat Pill) */
-    --stat-bg: #0f172a;
+    --stat-bg: #1e293b;
     --stat-border: #334155;
     --stat-label: #94a3b8;
     --stat-value: #f8fafc;
@@ -135,10 +143,14 @@
     /* 데모 컨테이너 카드 */
     --card-bg: #0c4a6e;
     --card-border: #0369a1;
+    --toolbar-bg: #052237;
     --text-title: #f0f9ff;
     --text-desc: #bae6fd;
     --grid-card-bg: #082f49;
     --grid-card-border: #0369a1;
+    --grid-header-bg: #0c4a6e;
+    --grid-header-border: #0369a1;
+    --grid-header-text: #f0f9ff;
 
     /* 배지 & 태그 */
     --badge-bg: #082f49;
@@ -149,7 +161,7 @@
     --tag-border: #0284c7;
 
     /* 통계 알약 (Stat Pill) */
-    --stat-bg: #082f49;
+    --stat-bg: #0c4a6e;
     --stat-border: #0369a1;
     --stat-label: #7dd3fc;
     --stat-value: #f0f9ff;
@@ -173,13 +185,13 @@
 }
 
 .tachyon-grid .tachyon-group-header {
-    background-color: var(--card-bg);
-    border-bottom: 1px solid var(--grid-card-border);
+    background-color: var(--grid-header-bg);
+    border-bottom: 1px solid var(--grid-header-border);
 }
 
 .tachyon-grid .header-cell {
-    background-color: var(--card-bg);
-    color: var(--text-title);
+    background-color: var(--grid-header-bg);
+    color: var(--grid-header-text);
     font-weight: 600;
     font-size: 13px;
 }
@@ -241,6 +253,7 @@
         border: 1px solid var(--stat-border);
         background-color: var(--stat-bg);
         color: var(--stat-value);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
         transition: all 0.2s ease;
     }
 

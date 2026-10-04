@@ -50,20 +50,37 @@ export const treeGridColumns: GridColumnDef[] = [
  * 화면 5: 셀 시각화 그리드용 컬럼 정의
  */
 export const visualizationGridColumns: GridColumnDef[] = [
-    {field: 'id', headerName: '품목코드', width: 110, pinned: 'left', align: 'center'},
-    {field: 'productName', headerName: '품목/솔루션명', width: 220, pinned: 'left'},
-    {field: 'category', headerName: '분류', width: 120, align: 'center'},
-    {field: 'target', headerName: '연간 목표액', width: 130, align: 'right'},
-    {field: 'actual', headerName: '연간 실적액', width: 130, align: 'right'},
-    {field: 'achievementRate', headerName: '목표 달성률', width: 150, renderer: 'progressBar', align: 'center'},
+    {field: 'id', headerName: '품목코드', width: 110, pinned: 'left', align: 'center', sortable: true},
+    {field: 'productName', headerName: '품목 / 솔루션명', width: 220, pinned: 'left', sortable: true},
+    {field: 'location', headerName: '관할 사업장', width: 110, align: 'center', sortable: true},
+    {field: 'category', headerName: '분류', width: 120, align: 'center', sortable: true},
+    {field: 'target', headerName: '연간 목표액', width: 130, align: 'right', sortable: true},
+    {field: 'actual', headerName: '연간 실적액', width: 130, align: 'right', sortable: true},
+    {field: 'yoyGrowth', headerName: '전년비 YoY', width: 110, align: 'right', renderer: 'yoyGrowth', sortable: true},
+    {
+        field: 'achievementRate',
+        headerName: '목표 달성률 (게이지)',
+        width: 160,
+        renderer: 'progressBar',
+        align: 'center',
+        sortable: true
+    },
     {
         field: 'monthlySales',
         headerName: '12개월 매출 추세 (스파크라인)',
-        width: 200,
+        width: 220,
         renderer: 'sparkline',
         align: 'center'
     },
-    {field: 'trendType', headerName: '추세', width: 90, align: 'center'},
-    {field: 'status', headerName: '평가', width: 90, align: 'center', renderer: 'badge'},
-    {field: 'riskScore', headerName: '위험 지수', width: 110, align: 'center', renderer: 'heatmap'}
+    {field: 'trendType', headerName: '추세 지표', width: 90, align: 'center', sortable: true},
+    {field: 'status', headerName: '성과 평가', width: 90, align: 'center', renderer: 'badge', sortable: true},
+    {
+        field: 'riskScore',
+        headerName: '위험 지수 (히트맵)',
+        width: 120,
+        align: 'center',
+        renderer: 'heatmap',
+        sortable: true
+    },
+    {field: 'lastAuditDate', headerName: '최종 점검일', width: 115, align: 'center', sortable: true}
 ];

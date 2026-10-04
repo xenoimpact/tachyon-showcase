@@ -590,9 +590,9 @@ function onSelectMounted(el: HTMLSelectElement | null): void {
  * 그리드의 최신 수정 데이터를 Web Worker를 통해 엑셀 파일로 고속 내보냅니다.
  */
 async function exportToExcel(): Promise<void> {
-    const nativeGrid = gridRef.value?.nativeInstance || gridRef.value?.grid || gridRef.value;
-    if (nativeGrid) {
-        await ExportXlsx.export.call(nativeGrid, '주문목록_인라인편집.xlsx');
+    const exportAddon = gridRef.value?.getAddon('export');
+    if (exportAddon) {
+        await exportAddon.export('주문목록_인라인편집.xlsx');
     }
 }
 </script>
