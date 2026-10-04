@@ -114,25 +114,27 @@ function toColumns(grid: DataGrid): Array<ColumnJSON> {
  */
 function toMergeCells(grid: DataGrid): Array<CellPositionJSON> {
     const mergeCells = grid.getMergeCells() || [];
+    const formatCell = (c: any): CellPositionJSON => {
+        return {
+            rowIndex: c.rowIndex,
+            endRowIndex: c.endRowIndex,
+            columnIndex: c.columnIndex,
+            endColumnIndex: c.endColumnIndex,
+            isCrossed: !!c.isCrossed
+        };
+    };
+
     return mergeCells.reduce((array: Array<CellPositionJSON>, cell: any) => {
-        const json = cell && typeof cell.toJSON === 'function' ? cell.toJSON() : cell || {};
-        array.push({
-            rowIndex: json.rowIndex,
-            endRowIndex: json.endRowIndex,
-            columnIndex: json.columnIndex,
-            endColumnIndex: json.endColumnIndex,
-            isCrossed: !!json.isCrossed
-        });
+        if (!cell) {
+            return array;
+        }
+        array.push(formatCell(cell));
+
         if (Array.isArray(cell.crossCells)) {
             cell.crossCells.forEach((c: any) => {
-                const cJson = c && typeof c.toJSON === 'function' ? c.toJSON() : c || {};
-                array.push({
-                    rowIndex: cJson.rowIndex,
-                    endRowIndex: cJson.endRowIndex,
-                    columnIndex: cJson.columnIndex,
-                    endColumnIndex: cJson.endColumnIndex,
-                    isCrossed: !!cJson.isCrossed
-                });
+                if (c) {
+                    array.push(formatCell(c));
+                }
             });
         }
         return array;

@@ -1,4 +1,4 @@
-import type {GridColumn, CellPosition} from 'tachyon.vue';
+import type {GridColumn} from 'tachyon.vue';
 
 /**
  * xlsx 워커와 메인 스레드 간에 공유되는 타입 정의 파일입니다.
@@ -9,7 +9,14 @@ import type {GridColumn, CellPosition} from 'tachyon.vue';
 export type ColumnJSON = Partial<GridColumn>;
 
 /** 셀 병합 위치의 직렬화 가능한 JSON 표현 타입입니다. */
-export type CellPositionJSON = Partial<CellPosition>;
+export type CellPositionJSON = {
+    rowIndex: number;
+    columnIndex: number;
+    endRowIndex: number;
+    endColumnIndex: number;
+    isCrossed?: boolean;
+};
 
 /** xlsx 내보내기 옵션 타입입니다. */
 export type Options = {date: Date; hideHeader: boolean};
+

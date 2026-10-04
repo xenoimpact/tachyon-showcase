@@ -18,6 +18,7 @@ if (import.meta.env.DEV) {
 tachyon.config(DefaultStyle);
 
 tachyon.theme.add('dark', themes.dark);
+tachyon.theme.add('steel-blue', themes.steelBlue);
 
 //타키온 포멧터 지정 - 숫자
 tachyon.formatter.add('number', {
