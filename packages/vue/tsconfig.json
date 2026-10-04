@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "strictNullChecks": false,
+        "jsx": "preserve",
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "noEmit": true,
+        "lib": ["esnext", "dom"],
+        "types": ["vite/client"]
+    },
+    "include": ["src/**/*.ts", "src/**/*.vue"]
+}
