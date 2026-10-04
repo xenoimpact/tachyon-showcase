@@ -83,6 +83,7 @@ export function generateLargeDataset(count: number): OrderItem[] {
         const status = STATUS_POOL[i % statLen];
 
         result[i] = {
+            no: seq,
             id: `ORD-2026-${String(seq).padStart(7, '0')}`,
             customer: CUSTOMER_POOL[i % custLen],
             department: DEPT_POOL[i % deptLen],
@@ -102,6 +103,108 @@ export function generateLargeDataset(count: number): OrderItem[] {
             completionDate: status === '검수완료' ? deliveryDate : undefined,
             monthlyTrend: TREND_PATTERNS[i % trendLen]
         };
+    }
+
+    return result;
+}
+
+/**
+ * 브라우저 렌더러가 화면(DOM/Paint)을 실제로 갱신할 수 있도록 프레임을 양보합니다.
+ */
+function yieldToRenderer(): Promise<void> {
+    return new Promise<void>((resolve) => {
+        if (typeof window !== 'undefined' && typeof window.requestAnimationFrame === 'function') {
+            window.requestAnimationFrame(() => {
+                resolve();
+            });
+        } else {
+            setTimeout(resolve, 0);
+        }
+    });
+}
+
+/**
+ * 대용량 데이터를 브라우저 메인 스레드 블로킹 없이 10,000건 단위 청크로 비동기 생성합니다.
+ * @param count 총 생성할 레코드 건수
+ * @param chunkSize 한 번에 처리할 청크 크기 (기본값: 10,000)
+ * @param onProgress 진행률 콜백 (0~100)
+ */
+export async function generateLargeDatasetAsync(
+    count: number,
+    chunkSize = 10_000,
+    onProgress?: (progress: number) => void
+): Promise<OrderItem[]> {
+    const result = new Array<OrderItem>(count);
+    const custLen = CUSTOMER_POOL.length;
+    const deptLen = DEPT_POOL.length;
+    const prodLen = PRODUCT_POOL.length;
+    const statLen = STATUS_POOL.length;
+    const prioLen = PRIORITY_POOL.length;
+    const trendLen = TREND_PATTERNS.length;
+
+    // 초기 0% 상태 보고 및 브라우저 화면 표시를 위한 1프레임 양보
+    if (onProgress) {
+        onProgress(0);
+        await yieldToRenderer();
+    }
+
+    let index = 0;
+    while (index < count) {
+        const nextLimit = Math.min(index + chunkSize, count);
+        for (let i = index; i < nextLimit; i++) {
+            const seq = i + 1;
+            const prod = PRODUCT_POOL[i % prodLen];
+            const qty = 1 + ((i * 7) % 50);
+            const unitPrice = prod.price;
+            const supplyAmount = qty * unitPrice;
+            const vat = Math.round(supplyAmount * 0.1);
+            const totalAmount = supplyAmount + vat;
+            const targetAmount = Math.round(supplyAmount * 0.9);
+            const achievementRate = targetAmount > 0 ? Math.round((supplyAmount / targetAmount) * 100) : 100;
+
+            const m = 1 + (i % 12);
+            const d = 1 + ((i * 3) % 25);
+            const monthStr = m < 10 ? `0${m}` : `${m}`;
+            const dayStr = d < 10 ? `0${d}` : `${d}`;
+            const orderDate = `2026-${monthStr}-${dayStr}`;
+
+            const delM = m === 12 ? 12 : m + 1;
+            const delMonthStr = delM < 10 ? `0${delM}` : `${delM}`;
+            const deliveryDate = `2026-${delMonthStr}-${dayStr}`;
+
+            const status = STATUS_POOL[i % statLen];
+
+            result[i] = {
+                no: seq,
+                id: `ORD-2026-${String(seq).padStart(7, '0')}`,
+                customer: CUSTOMER_POOL[i % custLen],
+                department: DEPT_POOL[i % deptLen],
+                projectName: prod.name,
+                category: prod.category,
+                quantity: qty,
+                unitPrice,
+                supplyAmount,
+                vat,
+                totalAmount,
+                targetAmount,
+                achievementRate,
+                status,
+                priority: PRIORITY_POOL[i % prioLen],
+                orderDate,
+                deliveryDate,
+                completionDate: status === '검수완료' ? deliveryDate : undefined,
+                monthlyTrend: TREND_PATTERNS[i % trendLen]
+            };
+        }
+        index = nextLimit;
+        if (onProgress) {
+            onProgress(Math.round((index / count) * 100));
+        }
+
+        // 10,000건마다 브라우저가 화면을 실제로 Paint할 수 있도록 렌더링 프레임 양보
+        if (index < count) {
+            await yieldToRenderer();
+        }
     }
 
     return result;

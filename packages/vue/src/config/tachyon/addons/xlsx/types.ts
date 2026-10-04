@@ -19,4 +19,3 @@ export type CellPositionJSON = {
 
 /** xlsx 내보내기 옵션 타입입니다. */
 export type Options = {date: Date; hideHeader: boolean};
-

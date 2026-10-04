@@ -101,7 +101,12 @@ export function numToStr(value: number, format: string, scale: number, rounding?
  * @param rounding 소수점 처리 방식입니다. (기본값: 'round')
  * @returns 최종 변환된 문자열입니다.
  */
-export function numToStr(value: number, format: string, scale: any = 1, rounding: NumberRounding = 'round'): string {
+export function numToStr(
+    value: number,
+    format: string = '0,0',
+    scale: any = 1,
+    rounding: NumberRounding = 'round'
+): string {
     let unit;
 
     // 3번째 인자가 rounding 방식인 경우 처리합니다.

@@ -30,9 +30,7 @@
                 <button
                     class="btn-demo"
                     :class="
-                        isAllFrozen
-                            ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700'
-                            : 'btn-demo-outline'
+                        isAllFrozen ? 'bg-blue-600 text-white border-blue-600 hover:bg-blue-700' : 'btn-demo-outline'
                     "
                     type="button"
                     title="4방향 전체 고정 프리셋 토글"
@@ -48,11 +46,7 @@
                 <div class="toggle-group">
                     <button
                         class="toggle-item"
-                        :class="
-                            frozenLeft > 0
-                                ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold'
-                                : ''
-                        "
+                        :class="frozenLeft > 0 ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold' : ''"
                         type="button"
                         title="좌측 2열 고정: 주문번호 & 고객사 식별자"
                         @click="toggleDirection('left')"
@@ -61,11 +55,7 @@
                     </button>
                     <button
                         class="toggle-item"
-                        :class="
-                            frozenRight > 0
-                                ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold'
-                                : ''
-                        "
+                        :class="frozenRight > 0 ? 'bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold' : ''"
                         type="button"
                         title="우측 1열 고정: 진행상태 배지 상시 주시"
                         @click="toggleDirection('right')"
@@ -74,11 +64,7 @@
                     </button>
                     <button
                         class="toggle-item"
-                        :class="
-                            frozenTop > 0
-                                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold'
-                                : ''
-                        "
+                        :class="frozenTop > 0 ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold' : ''"
                         type="button"
                         title="상단 2행 고정: 긴급 집중 관리 품의"
                         @click="toggleDirection('top')"
@@ -87,11 +73,7 @@
                     </button>
                     <button
                         class="toggle-item"
-                        :class="
-                            frozenBottom > 0
-                                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold'
-                                : ''
-                        "
+                        :class="frozenBottom > 0 ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold' : ''"
                         type="button"
                         title="하단 1행 고정: 전사 총 합계 요약행"
                         @click="toggleDirection('bottom')"
@@ -123,6 +105,7 @@
             :frozen-top="frozenTop"
             :frozen-bottom="frozenBottom"
             :theme="themeStore.currentTheme"
+            :styles="gridStyles"
             class="w-full h-full"
         >
             <!-- 좌측 열 고정 대상 (주문번호, 고객사명) -->
@@ -192,46 +175,46 @@
                 />
             </TachyonColumn>
 
-                <!-- 우선순위 & 일정 정보 -->
-                <TachyonColumn
-                    data-field="priority"
-                    header-text="우선순위"
-                    :width="90"
-                    :styles="{textAlign: 'center'}"
-                    sortable
-                />
-                <TachyonDateColumn
-                    data-field="orderDate"
-                    header-text="주문일자"
-                    :width="120"
-                    pattern="YYYY-MM-DD"
-                    :styles="{textAlign: 'center'}"
-                    sortable
-                />
-                <TachyonDateColumn
-                    data-field="deliveryDate"
-                    header-text="납기일자"
-                    :width="120"
-                    pattern="YYYY-MM-DD"
-                    :styles="{textAlign: 'center'}"
-                    sortable
-                />
+            <!-- 우선순위 & 일정 정보 -->
+            <TachyonColumn
+                data-field="priority"
+                header-text="우선순위"
+                :width="90"
+                :styles="{textAlign: 'center'}"
+                sortable
+            />
+            <TachyonDateColumn
+                data-field="orderDate"
+                header-text="주문일자"
+                :width="120"
+                pattern="YYYY-MM-DD"
+                :styles="{textAlign: 'center'}"
+                sortable
+            />
+            <TachyonDateColumn
+                data-field="deliveryDate"
+                header-text="납기일자"
+                :width="120"
+                pattern="YYYY-MM-DD"
+                :styles="{textAlign: 'center'}"
+                sortable
+            />
 
-                <!-- 우측 열 고정 대상: 진행상태 (가로 스크롤에 상관없이 우측 상시 고정) -->
-                <TachyonColumn
-                    data-field="status"
-                    header-text="진행상태"
-                    :width="120"
-                    :item-renderer="StatusBadgeRenderer"
-                    sortable
-                />
-            </TachyonGrid>
-        </DemoContainer>
-    </template>
+            <!-- 우측 열 고정 대상: 진행상태 (가로 스크롤에 상관없이 우측 상시 고정) -->
+            <TachyonColumn
+                data-field="status"
+                header-text="진행상태"
+                :width="120"
+                :item-renderer="StatusBadgeRenderer"
+                sortable
+            />
+        </TachyonGrid>
+    </DemoContainer>
+</template>
 
 <script setup lang="ts">
-import {computed, ref, shallowRef, useTemplateRef} from 'vue';
-import {TachyonGrid, TachyonColumn} from 'tachyon.vue';
+import {computed, ref, shallowRef, useTemplateRef, watch} from 'vue';
+import {TachyonGrid, TachyonColumn, type GridStyles} from 'tachyon.vue';
 import {mockOrders, numToStr, type OrderItem} from '@tachyon-showcase/shared';
 import TachyonNumberColumn from '@/config/tachyon/columns/TachyonNumberColumn';
 import TachyonDateColumn from '@/config/tachyon/columns/TachyonDateColumn';
@@ -241,8 +224,34 @@ import DemoContainer from '@/components/common/DemoContainer.vue';
 import {useThemeStore} from '@/stores/themeStore';
 
 const themeStore = useThemeStore();
-
 const gridRef = useTemplateRef<any>('gridRef');
+
+/**
+ * 테마별 고정행 및 일반행 배경색 매핑 테이블
+ * - urgent: 상단 긴급 주문 고정행 (앰버/골드 틴트)
+ * - summary: 하단 전사 결산 합계 고정행 (인디고/블루 틴트)
+ * - stripeEven / stripeOdd: 가독성을 위한 은은한 제브라 스트라이프
+ */
+const ROW_THEME_COLORS = {
+    light: {
+        urgent: 'rgba(254, 243, 199, 0.75)',
+        summary: 'rgba(224, 231, 255, 0.85)',
+        stripeEven: 'rgba(248, 250, 252, 0.75)',
+        stripeOdd: '#ffffff'
+    },
+    dark: {
+        urgent: 'rgba(180, 83, 9, 0.28)',
+        summary: 'rgba(37, 99, 235, 0.3)',
+        stripeEven: 'rgba(30, 41, 59, 0.35)',
+        stripeOdd: 'transparent'
+    },
+    'steel-blue': {
+        urgent: 'rgba(217, 119, 6, 0.35)',
+        summary: 'rgba(2, 132, 199, 0.4)',
+        stripeEven: 'rgba(12, 74, 110, 0.4)',
+        stripeOdd: 'transparent'
+    }
+} as const;
 
 /**
  * 실무 고정(Frozen) 데모를 위해 상단 긴급 주문 2건과 하단 전사 총 결산 요약행 1건을 결합한 데이터셋을 생성합니다.
@@ -265,11 +274,21 @@ function createShowcaseOrders(): OrderItem[] {
         };
     }
 
-    const totalQty = rawOrders.reduce((sum, item) => sum + (item.quantity || 0), 0);
-    const totalSupply = rawOrders.reduce((sum, item) => sum + (item.supplyAmount || 0), 0);
-    const totalVat = rawOrders.reduce((sum, item) => sum + (item.vat || 0), 0);
-    const grandTotal = rawOrders.reduce((sum, item) => sum + (item.totalAmount || 0), 0);
-    const totalTarget = rawOrders.reduce((sum, item) => sum + (item.targetAmount || 0), 0);
+    const totalQty = rawOrders.reduce((sum, item) => {
+        return sum + (item.quantity || 0);
+    }, 0);
+    const totalSupply = rawOrders.reduce((sum, item) => {
+        return sum + (item.supplyAmount || 0);
+    }, 0);
+    const totalVat = rawOrders.reduce((sum, item) => {
+        return sum + (item.vat || 0);
+    }, 0);
+    const grandTotal = rawOrders.reduce((sum, item) => {
+        return sum + (item.totalAmount || 0);
+    }, 0);
+    const totalTarget = rawOrders.reduce((sum, item) => {
+        return sum + (item.targetAmount || 0);
+    }, 0);
 
     const summaryRow: OrderItem = {
         id: '[합계]',
@@ -301,6 +320,50 @@ const frozenRight = ref<number>(1);
 const frozenTop = ref<number>(2);
 const frozenBottom = ref<number>(1);
 
+/** 현재 적용 중인 테마 키 */
+const currentThemeKey = computed<keyof typeof ROW_THEME_COLORS>(() => {
+    const theme = themeStore.currentTheme;
+    if (theme === 'dark' || theme === 'steel-blue') {
+        return theme;
+    }
+    return 'light';
+});
+
+/**
+ * 상단 긴급 고정행(2행) 및 하단 전사 합계 고정행(1행)을 시각적으로 강조하는 그리드 스타일
+ */
+const gridStyles = computed<GridStyles>(() => {
+    const topCount = frozenTop.value;
+    const bottomCount = frozenBottom.value;
+    const totalCount = items.value.length;
+    const colors = ROW_THEME_COLORS[currentThemeKey.value];
+
+    return {
+        rowColors: (rowIndex: number) => {
+            // 1. 상단 긴급 주문 고정행 (앰버/골드 틴트 강조)
+            if (topCount > 0 && rowIndex < topCount) {
+                return colors.urgent;
+            }
+
+            // 2. 하단 전사 결산 합계 고정행 (인디고/블루 틴트 강조)
+            if (bottomCount > 0 && rowIndex >= totalCount - bottomCount) {
+                return colors.summary;
+            }
+
+            // 3. 일반 데이터 행 (가독성을 위한 제브라 스트라이프)
+            return rowIndex % 2 === 0 ? colors.stripeEven : colors.stripeOdd;
+        }
+    };
+});
+
+// 테마 또는 고정 방향 상태 변경 시 그리드 배경 즉각 재렌더링
+watch([() => themeStore.currentTheme, frozenTop, frozenBottom], () => {
+    if (gridRef.value?.nativeInstance) {
+        gridRef.value.nativeInstance.invalidate();
+        gridRef.value.nativeInstance.flush();
+    }
+});
+
 /**
  * 요약 행([합계])을 제외한 순수 주문 데이터 목록입니다.
  */
@@ -310,13 +373,12 @@ const baseOrders = computed<OrderItem[]>(() => {
     });
 });
 
-/**
- * 순수 주문 데이터 건수입니다.
- */
+/** 순수 주문 데이터 건수 */
 const baseOrdersCount = computed<number>(() => {
     return baseOrders.value.length;
 });
 
+/** 총 주문 합계금액 텍스트 */
 const totalOrderAmountText = computed<string>(() => {
     const total = baseOrders.value.reduce((acc, cur) => {
         return acc + (cur.totalAmount || 0);
@@ -324,6 +386,7 @@ const totalOrderAmountText = computed<string>(() => {
     return numToStr(total, '0,0');
 });
 
+/** 총 공급가액 텍스트 */
 const totalSupplyAmountText = computed<string>(() => {
     const total = baseOrders.value.reduce((acc, cur) => {
         return acc + (cur.supplyAmount || 0);
@@ -331,39 +394,27 @@ const totalSupplyAmountText = computed<string>(() => {
     return numToStr(total, '0,0');
 });
 
+/** 검수완료 건수 */
 const completedCount = computed<number>(() => {
     return baseOrders.value.filter((item) => {
         return item.status === '검수완료';
     }).length;
 });
 
+/** 4방향 전체 고정 여부 */
 const isAllFrozen = computed<boolean>(() => {
-    return (
-        frozenLeft.value > 0 &&
-        frozenRight.value > 0 &&
-        frozenTop.value > 0 &&
-        frozenBottom.value > 0
-    );
+    return frozenLeft.value > 0 && frozenRight.value > 0 && frozenTop.value > 0 && frozenBottom.value > 0;
 });
 
+/** 고정 프리셋 상태 안내 라벨 */
 const frozenPresetLabel = computed<string>(() => {
     if (isAllFrozen.value) {
         return '4방향 고정중';
     }
-    if (
-        frozenLeft.value > 0 &&
-        frozenRight.value === 0 &&
-        frozenTop.value === 0 &&
-        frozenBottom.value === 0
-    ) {
+    if (frozenLeft.value > 0 && frozenRight.value === 0 && frozenTop.value === 0 && frozenBottom.value === 0) {
         return '좌측 열 고정중';
     }
-    if (
-        frozenLeft.value === 0 &&
-        frozenRight.value === 0 &&
-        frozenTop.value === 0 &&
-        frozenBottom.value === 0
-    ) {
+    if (frozenLeft.value === 0 && frozenRight.value === 0 && frozenTop.value === 0 && frozenBottom.value === 0) {
         return '고정 해제됨';
     }
     return '사용자 정의 고정';
@@ -378,12 +429,7 @@ function cycleFrozenMode(): void {
         frozenRight.value = 0;
         frozenTop.value = 0;
         frozenBottom.value = 0;
-    } else if (
-        frozenLeft.value > 0 &&
-        frozenRight.value === 0 &&
-        frozenTop.value === 0 &&
-        frozenBottom.value === 0
-    ) {
+    } else if (frozenLeft.value > 0 && frozenRight.value === 0 && frozenTop.value === 0 && frozenBottom.value === 0) {
         frozenLeft.value = 0;
         frozenRight.value = 0;
         frozenTop.value = 0;
@@ -418,7 +464,7 @@ function toggleDirection(dir: 'left' | 'right' | 'top' | 'bottom'): void {
 async function exportToExcel(): Promise<void> {
     const nativeGrid = gridRef.value?.nativeInstance || gridRef.value?.grid || gridRef.value;
     if (nativeGrid) {
-        await ExportXlsx.export.call({grid: nativeGrid}, '기본그리드_주문현황.xlsx');
+        await ExportXlsx.export.call(nativeGrid, '기본그리드_주문현황.xlsx');
     } else {
         console.warn('그리드 인스턴스를 찾을 수 없습니다.');
     }

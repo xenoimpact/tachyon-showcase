@@ -1,6 +1,26 @@
-# 화면 3: 영역 선택과 셀 수정
+# 화면 3: 인라인 셀 편집 및 클립보드 (Cell Editor & Excel I/O)
 
-- [ ] 마우스 드래그 영역 선택
-- [ ] 날짜, 목록 선택 에디터
-- [ ] 클립보드 붙여넣기, XLSX 내보내기 동작 확인
-- [ ] 캡처 저장 (`docs/public/screenshots/03-cell-editor.png`)
+- [x] 엔터프라이즈 인라인 편집 활성화 (`editable`, `:edit-on-events="['doubleClick']"`)
+- [x] 키보드 내비게이션 & 편집 진입 조작
+  - [x] `F2` 또는 더블클릭으로 인라인 셀 편집 진입
+  - [x] `Enter` 또는 `Tab` 확정 후 다음 편집 가능 셀로 자동 이동
+  - [x] `Esc` 키 취소 및 기존 원본 값 복원
+- [x] 데이터 타입별 전용 에디터 구축
+  - [x] 텍스트 에디터: 고객사명(`customer`), 품목/프로젝트명(`projectName`)
+  - [x] 드롭다운 셀렉터 에디터: 분류(`category`), 진행상태(`status` + `StatusBadgeRenderer`)
+  - [x] `v-slot:itemEditor`의 `hookEditEnd` 훅을 통한 즉시 값 확정 및 에디터 자동 종료
+  - [x] 숫자 에디터: 수량(`quantity`), 단가(`unitPrice`) (`TachyonNumberColumn`, `pattern="0,0"`)
+  - [x] 날짜 피커 에디터: 주문일자(`orderDate`), 납기일자(`deliveryDate`) (`TachyonDateColumn`, `pattern="YYYY-MM-DD"`)
+- [x] 실시간 비즈니스 수식 연동 (`@item-edit-end`)
+  - [x] 수량 또는 단가 변경 즉시 `공급가액 = 수량 × 단가` 연동
+  - [x] `부가세 = 공급가액 × 10%`, `합계금액 = 공급가액 + 부가세` 실시간 계산
+  - [x] 계산열 3종 읽기 전용(`:editable="false"`) 보호
+  - [x] 그리드 렌더러 즉각 갱신 (`invalidate()`, `flush()`)
+- [x] 클립보드 복사 & 일괄 붙여넣기 (`:paste-from-clipboard="true"`)
+  - [x] 다중 셀 드래그 선택 및 `Ctrl+C` 복사
+  - [x] 외부 엑셀 표 데이터 `Ctrl+V` 일괄 붙여넣기 지원
+- [x] 2-Tier 슬림 툴바 & 실시간 KPI
+  - [x] 실시간 5종 KPI: 데이터 건수(100건), 수정된 행(N건), 총 공급가액, 총 부가세, 총 합계금액
+  - [x] 원본 데이터 복원 기능 ([수정 초기화] 버튼)
+  - [x] Web Worker 기반 백그라운드 엑셀 내보내기 ([Excel 내보내기] 버튼)
+- [x] 전체 번들 빌드 검증 (`pnpm build` 통과)

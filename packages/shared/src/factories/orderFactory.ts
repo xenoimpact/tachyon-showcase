@@ -98,6 +98,7 @@ export const orderFactory = Factory.define<OrderItem>(({sequence, params}) => {
     });
 
     return {
+        no: seq,
         id: `ORD-2026-${String(seq).padStart(4, '0')}`,
         customer,
         department,

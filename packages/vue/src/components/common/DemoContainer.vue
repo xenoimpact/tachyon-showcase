@@ -42,9 +42,5 @@ interface Props {
     description?: string;
 }
 
-const {
-    title,
-    description = ''
-} = defineProps<Props>();
+const {title, description = ''} = defineProps<Props>();
 </script>
-
