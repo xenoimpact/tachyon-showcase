@@ -194,7 +194,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref, shallowRef, useTemplateRef} from 'vue';
+import {computed, ref, shallowRef, useTemplateRef, watch} from 'vue';
 import {TachyonTreeGrid, TachyonTreeColumn, TachyonColumn, type GridStyles} from 'tachyon.vue';
 import {mockTreeData, numToStr, type TreeNode} from '@tachyon-showcase/shared';
 import TachyonNumberColumn from '@/config/tachyon/columns/TachyonNumberColumn';
@@ -320,7 +320,7 @@ const gridStyles = computed<GridStyles>(() => {
             if (rowIndex === 0) {
                 return summaryColor;
             }
-            return isDark ? 'transparent' : '#ffffff';
+            return isDark || isSteel ? 'transparent' : '#ffffff';
         }
     };
 });
@@ -366,6 +366,17 @@ function formatRate(item: any): string {
     }
     return '0.0%';
 }
+
+// 테마 변경 시 타키온 그리드 캔버스 즉각 재렌더링
+watch(
+    () => themeStore.currentTheme,
+    () => {
+        if (gridRef.value?.nativeInstance) {
+            gridRef.value.nativeInstance.invalidate();
+            gridRef.value.nativeInstance.flush();
+        }
+    }
+);
 </script>
 
 <style scoped>
