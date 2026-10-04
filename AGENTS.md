@@ -17,9 +17,10 @@
 
 1. **자율 실행 제한**: 터미널 명령어 실행, 파일 수정/생성/삭제는 사용자 사전 승인을 받습니다.
 2. **설계 의도(Rationale) 제시 의무**: 코드 변경이나 설계 제안 시 단순 코드 나열을 금지하며, "왜 이렇게 구성했는지" 사고 과정과 판단 근거를 한국어로 명확히 설명합니다.
-3. **코드 스타일**: [.agents/rules/code-style.md](.agents/rules/code-style.md)의 규칙을 준수합니다.
+3. **코드 및 레이아웃 규칙**: [.agents/rules/code-style.md](.agents/rules/code-style.md) 및 [.agents/rules/demo-layout.md](.agents/rules/demo-layout.md)의 규격을 준수합니다.
 4. **Harness-First (공통 데이터 우선)**: 데모 화면을 구현하기 전 반드시 `packages/shared`에 공통 데이터셋과 인터페이스를 먼저 정의하고, 각 프레임워크는 이를 참조하여 100% 동일한 화면을 구성합니다.
 5. **언어 규칙**: 사고 과정(Thought)을 포함한 모든 설명은 한국어 전용으로 작성합니다.
+6. **화면별 스펙 사전 확인 의무**: 각 데모 화면(01~05)을 구현하거나 수정하기 전, 반드시 대응하는 `.agents/specs/` 문서를 먼저 읽고 명시된 컬럼명, 너비, 정렬, 포맷터를 정확히 준수합니다.
 
 ## 3. 진행 상태 추적 (`.agents/progress/`)
 

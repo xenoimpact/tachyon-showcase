@@ -77,8 +77,8 @@ export default {
          * 고정 구분선
          */
         frozenLine: {
-            width: 2,
-            color: '#000',
+            width: 1,
+            color: '#64748b',
             dashed: []
         },
         /**

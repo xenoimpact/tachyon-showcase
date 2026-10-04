@@ -21,7 +21,7 @@ export default {
             color: 'rgba(56, 189, 248, 0.25)'
         },
         frozenLine: {
-            width: 2,
+            width: 1,
             color: '#38bdf8'
         },
         caretLine: {

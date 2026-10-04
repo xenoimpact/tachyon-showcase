@@ -1,50 +1,36 @@
 <template>
-    <div class="flex flex-col gap-4 w-full h-full transition-colors duration-200">
-        <!-- 상단 헤더 카드 -->
+    <div class="flex flex-col w-full h-full min-h-0 overflow-hidden transition-colors duration-200">
+        <!-- 1층: 타이틀 & 설명 바 -->
         <div
-            class="flex flex-wrap justify-between items-center p-5 rounded-xl border transition-all duration-200 gap-4 shadow-xs bg-[var(--card-bg)] border-[var(--card-border)] text-[var(--text-title)]"
+            class="flex items-center px-6 py-2.5 border-b shrink-0 transition-colors duration-200 gap-3 bg-[var(--card-bg)] border-[var(--card-border)]"
         >
-            <!-- 화면 정보 (배지, 태그, 제목, 설명) -->
-            <div class="flex flex-col gap-2 max-w-2xl">
-                <div v-if="badge || tags.length > 0" class="flex flex-wrap items-center gap-1.5">
-                    <span
-                        v-if="badge"
-                        class="text-xs font-bold px-2 py-0.5 rounded-md border bg-[var(--badge-bg)] text-[var(--badge-text)] border-[var(--badge-border)]"
-                    >
-                        {{ badge }}
-                    </span>
-                    <span
-                        v-for="tag in tags"
-                        :key="tag"
-                        class="text-xs font-semibold px-2 py-0.5 rounded-md border bg-[var(--tag-bg)] text-[var(--tag-text)] border-[var(--tag-border)]"
-                    >
-                        {{ tag }}
-                    </span>
-                </div>
-                <h2 class="text-xl font-extrabold tracking-tight m-0">{{ title }}</h2>
-                <p v-if="description" class="text-xs m-0 leading-relaxed text-[var(--text-desc)]">
-                    {{ description }}
-                </p>
+            <h2 class="text-sm font-bold tracking-tight m-0 shrink-0 text-[var(--text-title)]">
+                {{ title }}
+            </h2>
+            <div v-if="description" class="w-px h-3.5 bg-[var(--card-border)] shrink-0"></div>
+            <p v-if="description" class="text-xs m-0 leading-relaxed text-[var(--text-desc)] flex-1">
+                {{ description }}
+            </p>
+        </div>
+
+        <!-- 2층: 통계 요약 및 액션 컨트롤 툴바 -->
+        <div
+            v-if="$slots.stats || $slots.actions"
+            class="flex flex-wrap justify-between items-center px-6 py-1.5 border-b shrink-0 transition-colors duration-200 gap-4 bg-[var(--nav-bg)] border-[var(--nav-border)]"
+        >
+            <!-- 좌측: 데이터 분석 요약 통계 슬롯 -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <slot name="stats" />
             </div>
 
-            <!-- 컨트롤 툴바 (통계 슬롯 + 액션 버튼 슬롯) -->
-            <div class="flex items-center gap-4 flex-wrap">
-                <!-- 통계 슬롯 -->
-                <div v-if="$slots.stats" class="flex items-center gap-2">
-                    <slot name="stats" />
-                </div>
-
-                <!-- 화면별 액션 버튼 슬롯 -->
-                <div v-if="$slots.actions" class="flex items-center gap-2">
-                    <slot name="actions" />
-                </div>
+            <!-- 우측: 화면별 조작 액션 버튼 슬롯 -->
+            <div class="flex items-center gap-2 shrink-0">
+                <slot name="actions" />
             </div>
         </div>
 
-        <!-- 메인 그리드 카드 영역 -->
-        <div
-            class="rounded-xl border p-4 shadow-xs h-[620px] flex flex-col transition-all duration-200 bg-[var(--grid-card-bg)] border-[var(--grid-card-border)]"
-        >
+        <!-- 하단: 메인 그리드 작업 영역 (100% 핏) -->
+        <div class="flex-1 min-h-0 w-full flex flex-col bg-[var(--grid-card-bg)] overflow-hidden">
             <slot />
         </div>
     </div>
@@ -54,14 +40,11 @@
 interface Props {
     title: string;
     description?: string;
-    badge?: string;
-    tags?: string[];
 }
 
 const {
     title,
-    description = '',
-    badge = '',
-    tags = []
+    description = ''
 } = defineProps<Props>();
 </script>
+
