@@ -22,3 +22,7 @@ export * from './dataGen';
 
 // 컬럼 설정 Export
 export * from './columns';
+
+// 실시간 텔레메트리 Export
+export * from './types/telemetry';
+export * from './telemetryData';

@@ -69,10 +69,14 @@ export default defineComponent({
                 case '우수':
                 case '완료':
                 case '검수완료':
+                case '가동':
+                case '정상':
                 case '상승': {
                     return 'badge--success';
                 }
                 case '양호':
+                case '대기':
+                case '주의':
                 case '진행중': {
                     return 'badge--primary';
                 }
@@ -83,6 +87,8 @@ export default defineComponent({
                     return 'badge--neutral';
                 }
                 case '경고':
+                case '경보':
+                case '점검':
                 case '지연':
                 case '취소':
                 case '하강': {
