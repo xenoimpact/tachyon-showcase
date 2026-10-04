@@ -312,8 +312,8 @@ const gridStyles = computed<GridStyles>(() => {
     const summaryColor = isDark
         ? 'rgba(37, 99, 235, 0.3)'
         : isSteel
-        ? 'rgba(2, 132, 199, 0.4)'
-        : 'rgba(224, 231, 255, 0.85)';
+          ? 'rgba(2, 132, 199, 0.4)'
+          : 'rgba(224, 231, 255, 0.85)';
 
     return {
         rowColors: (rowIndex: number) => {
@@ -333,7 +333,11 @@ function getThemeColumnBg(type: 'management' | 'finance' | 'status'): string {
         case 'management':
             return isDark ? 'rgba(30, 41, 59, 0.4)' : isSteel ? 'rgba(12, 74, 110, 0.35)' : 'rgba(241, 245, 249, 0.65)';
         case 'finance':
-            return isDark ? 'rgba(30, 58, 138, 0.22)' : isSteel ? 'rgba(3, 105, 161, 0.25)' : 'rgba(239, 246, 255, 0.75)';
+            return isDark
+                ? 'rgba(30, 58, 138, 0.22)'
+                : isSteel
+                  ? 'rgba(3, 105, 161, 0.25)'
+                  : 'rgba(239, 246, 255, 0.75)';
         case 'status':
             return isDark ? 'rgba(6, 78, 59, 0.22)' : isSteel ? 'rgba(4, 120, 87, 0.25)' : 'rgba(236, 253, 245, 0.65)';
     }
@@ -384,5 +388,3 @@ function formatRate(item: any): string {
     text-overflow: ellipsis;
 }
 </style>
-
-

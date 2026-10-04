@@ -9,11 +9,7 @@ import ExportXlsx from './addons/xlsx/export';
 import ImportXlsx from './addons/xlsx/import';
 import CollectionManager from './addons/collection/CollectionManager';
 
-if (import.meta.env.DEV) {
-    import.meta.glob('./license-local.ts', {eager: true});
-} else {
-    import.meta.glob('./license-local.ts', {eager: true});
-}
+import.meta.glob('./license-dev.ts', {eager: true});
 
 tachyon.config(DefaultStyle);
 

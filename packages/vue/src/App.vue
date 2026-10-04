@@ -51,7 +51,7 @@
                                     : 'bg-slate-700 text-sky-400 shadow-xs font-bold'
                                 : themeStore.currentTheme === 'default'
                                   ? 'bg-transparent text-slate-600 hover:text-slate-900'
-                                  : 'bg-transparent text-slate-400 hover:text-white',
+                                  : 'bg-transparent text-slate-400 hover:text-white'
                         ]"
                         type="button"
                         :title="t.label + ' 테마로 전환'"
