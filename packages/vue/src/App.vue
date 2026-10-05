@@ -126,6 +126,7 @@ import CellEditorDemo from '@/views/CellEditorDemo.vue';
 import CellVisualDemo from '@/views/CellVisualDemo.vue';
 import TreeGridDemo from '@/views/TreeGridDemo.vue';
 import RealtimeTelemetryDemo from '@/views/RealtimeTelemetryDemo.vue';
+import PixelMatrixDemo from '@/views/PixelMatrixDemo.vue';
 import DemoPlaceholder from '@/components/common/DemoPlaceholder.vue';
 
 interface MenuItem {
@@ -142,7 +143,8 @@ const menuItems: MenuItem[] = [
     {id: 'editor', index: '03', name: '엑셀형 셀 에디터 & 연동', component: CellEditorDemo},
     {id: 'visual', index: '04', name: '셀 시각화', component: CellVisualDemo},
     {id: 'tree', index: '05', name: '계층형 트리 그리드', component: TreeGridDemo},
-    {id: 'realtime', index: '06', name: '실시간 데이터 갱신', component: RealtimeTelemetryDemo}
+    {id: 'realtime', index: '06', name: '실시간 데이터 갱신', component: RealtimeTelemetryDemo},
+    {id: 'pixel', index: '07', name: '픽셀 매트릭스 & 전광판', component: PixelMatrixDemo}
 ];
 
 const themeStore = useThemeStore();
