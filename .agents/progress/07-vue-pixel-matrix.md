@@ -6,8 +6,8 @@
 
 ## 작업 체크리스트
 - [x] `packages/vue/src/components/renderers/CanvasPixelRenderer.ts` 초고속 Canvas 2D LED 도트 렌더러 구현 (네온 글로우, 코어 하이라이트, 동적 컬러 맵핑)
-- [x] `packages/vue/src/views/PixelMatrixDemo.vue` 64열 × 60행 (3,840개 셀) 그리드 뷰 구현
-  - [x] 360° 회전 레이더 스캐너 (중심 32,30, 반경 28, 4중 동심원 링, 8대 타깃 탐지 플래시)
+- [x] `packages/vue/src/views/PixelMatrixDemo.vue` 60열 × 60행 (3,600개 셀 - 1:1 정방형) 그리드 뷰 구현
+  - [x] 360° 회전 레이더 스캐너 (중심 30,30, 반경 28, 4중 동심원 링, 8대 타깃 탐지 플래시)
   - [x] 오프스크린 캔버스 기반 임의 텍스트 비트맵 변환 및 무한 수평 스크롤 티커 (34px 대형 폰트)
   - [x] 반도체 웨이퍼 사인 파동(Sine Wave) 애니메이션
   - [x] 콘웨이 생명 게임(Conway's Game of Life) 셀룰러 오토마타 시뮬레이션

@@ -1,7 +1,7 @@
 <template>
     <DemoContainer
         title="07. 픽셀 도트 매트릭스 & 전광판 관제"
-        subtitle="그리드의 각 셀을 1개의 LED 픽셀로 전환하여 3,840개 셀을 60 FPS로 실시간 제어하는 인터랙티브 쇼케이스"
+        subtitle="그리드의 각 셀을 1개의 LED 픽셀로 전환하여 3,600개 셀을 60 FPS로 실시간 제어하는 인터랙티브 쇼케이스"
     >
         <!-- 2-Tier 슬림 툴바 -->
         <template #toolbar>
@@ -80,7 +80,7 @@
                     <div class="flex items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full" :class="isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'"></span>
                         <span class="text-slate-500 dark:text-slate-400">매트릭스 규모:</span>
-                        <span class="font-mono font-semibold text-slate-800 dark:text-slate-200">64열 × 60행 (3,840개 픽셀 셀)</span>
+                        <span class="font-mono font-semibold text-slate-800 dark:text-slate-200">60열 × 60행 (3,600개 픽셀 셀 - 1:1 정방형)</span>
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="text-slate-500 dark:text-slate-400">초당 프레임:</span>
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="text-slate-400 dark:text-slate-500 text-[11px]">
-                    ※ 타키온 캔버스 2D 네이티브 렌더러 기반 3,840개 셀 초고속 동시 갱신
+                    ※ 타키온 캔버스 2D 네이티브 렌더러 기반 3,600개 셀 초고속 동시 갱신
                 </div>
 
                 <!-- 자동 순환 시 하단에서 부드럽게 차오르는 슬림 프로그레스 게이지 바 -->
@@ -106,7 +106,7 @@
             </div>
         </template>
 
-        <!-- 타키온 그리드 메인 영역 (64열 × 60행, 행 높이 16px 정밀 도트 매트릭스) -->
+        <!-- 타키온 그리드 메인 영역 (60열 × 60행, 행 높이 16px 정밀 1:1 도트 매트릭스) -->
         <TachyonGrid
             ref="gridRef"
             :items="matrixItems"
@@ -120,6 +120,7 @@
                 :data-field="`c${colIndex - 1}`"
                 :header-text="`${colIndex}`"
                 :width="16"
+                :min-width="16"
                 :item-renderer="CanvasPixelRenderer"
             />
         </TachyonGrid>
@@ -136,8 +137,8 @@ import {CanvasPixelRenderer} from '@/components/renderers/CanvasPixelRenderer';
 const themeStore = useThemeStore();
 const gridRef = useTemplateRef<any>('gridRef');
 
-// 64열 × 60행 정밀 캔버스 매트릭스
-const TOTAL_COLS = 64;
+// 60열 × 60행 완벽한 1:1 정방형 매트릭스
+const TOTAL_COLS = 60;
 const TOTAL_ROWS = 60;
 
 type MatrixMode = 'radar' | 'marquee' | 'wafer' | 'life';
@@ -163,7 +164,7 @@ let lastModeSwitchTime = performance.now();
 const cycleProgress = ref(0);
 const cycleCountdownSec = ref(7);
 
-// 60행 × 64열 픽셀 데이터 매트릭스
+// 60행 × 60열 픽셀 데이터 매트릭스
 const matrixItems = shallowRef<Record<string, number>[]>([]);
 
 // --------------------------------------------------------------------------
@@ -184,7 +185,7 @@ function initMatrix(): Record<string, number>[] {
 matrixItems.value = initMatrix();
 
 // --------------------------------------------------------------------------
-// 64×60 맞춤 레이더 타깃 블립 (Target Blips) 정의
+// 60×60 맞춤 레이더 타깃 블립 (Target Blips) 정의
 // --------------------------------------------------------------------------
 interface TargetBlip {
     x: number;
@@ -195,19 +196,19 @@ interface TargetBlip {
     name: string;
 }
 
-const CENTER_X = TOTAL_COLS / 2; // 32
+const CENTER_X = TOTAL_COLS / 2; // 30
 const CENTER_Y = TOTAL_ROWS / 2; // 30
 const MAX_RADAR_RADIUS = 28.0;
 
 const targetBlips: TargetBlip[] = [
-    {x: 20, y: 16, angle: 0, lastDetected: 0, color: 4, name: 'TGT-ALPHA'},
-    {x: 44, y: 18, angle: 0, lastDetected: 0, color: 4, name: 'TGT-BRAVO'},
-    {x: 48, y: 38, angle: 0, lastDetected: 0, color: 3, name: 'TGT-CHARLIE'},
-    {x: 38, y: 48, angle: 0, lastDetected: 0, color: 4, name: 'TGT-DELTA'},
-    {x: 18, y: 42, angle: 0, lastDetected: 0, color: 3, name: 'TGT-ECHO'},
-    {x: 15, y: 28, angle: 0, lastDetected: 0, color: 4, name: 'TGT-FOXTROT'},
-    {x: 30, y: 8, angle: 0, lastDetected: 0, color: 4, name: 'TGT-GOLF'},
-    {x: 46, y: 12, angle: 0, lastDetected: 0, color: 3, name: 'TGT-HOTEL'}
+    {x: 18, y: 16, angle: 0, lastDetected: 0, color: 4, name: 'TGT-ALPHA'},
+    {x: 42, y: 18, angle: 0, lastDetected: 0, color: 4, name: 'TGT-BRAVO'},
+    {x: 46, y: 38, angle: 0, lastDetected: 0, color: 3, name: 'TGT-CHARLIE'},
+    {x: 36, y: 48, angle: 0, lastDetected: 0, color: 4, name: 'TGT-DELTA'},
+    {x: 16, y: 42, angle: 0, lastDetected: 0, color: 3, name: 'TGT-ECHO'},
+    {x: 14, y: 28, angle: 0, lastDetected: 0, color: 4, name: 'TGT-FOXTROT'},
+    {x: 28, y: 8, angle: 0, lastDetected: 0, color: 4, name: 'TGT-GOLF'},
+    {x: 44, y: 12, angle: 0, lastDetected: 0, color: 3, name: 'TGT-HOTEL'}
 ];
 
 for (let i = 0; i < targetBlips.length; i++) {
@@ -220,7 +221,7 @@ for (let i = 0; i < targetBlips.length; i++) {
 }
 
 // --------------------------------------------------------------------------
-// 60행 맞춤 오프스크린 캔버스 텍스트 비트맵 제너레이터 (크기 확대)
+// 60행 맞춤 오프스크린 캔버스 텍스트 비트맵 제너레이터
 // --------------------------------------------------------------------------
 let textBitmap: number[][] = [];
 let scrollOffset = 0;
@@ -232,7 +233,6 @@ function generateTextBitmap(text: string): void {
         return;
     }
 
-    // 60행 매트릭스에 어울리도록 폰트 크기를 34px로 확대
     const fontSize = 34;
     ctx.font = `bold ${fontSize}px "Pretendard", "Segoe UI", sans-serif`;
     const textWidth = Math.ceil(ctx.measureText(text).width) + 30;
@@ -400,7 +400,7 @@ function renderFrame(now: number): void {
     const items = matrixItems.value;
 
     // ======================================================================
-    // 모드 1: 360° 회전 레이더 스캐너 (64×60 맞춤)
+    // 모드 1: 360° 회전 레이더 스캐너 (60×60 맞춤)
     // ======================================================================
     if (currentMode.value === 'radar') {
         const sweepAngle = (tickCount * 0.04) % (Math.PI * 2);
@@ -446,7 +446,7 @@ function renderFrame(now: number): void {
                     continue;
                 }
 
-                // 십자선 (Crosshairs)
+                // 십자선 (Crosshairs: x=30, y=30 정중앙 축)
                 if ((c === CENTER_X || r === CENTER_Y) && dist < MAX_RADAR_RADIUS) {
                     row[`c${c}`] = 1;
                     continue;
@@ -497,7 +497,7 @@ function renderFrame(now: number): void {
         }
     }
     // ======================================================================
-    // 모드 2: LED 전광판 티커 (64×60 맞춤)
+    // 모드 2: LED 전광판 티커 (60×60 맞춤)
     // ======================================================================
     else if (currentMode.value === 'marquee') {
         if (textBitmap.length > 0) {
@@ -526,7 +526,7 @@ function renderFrame(now: number): void {
         }
     }
     // ======================================================================
-    // 모드 3: 반도체 웨이퍼 파동 (64×60 맞춤)
+    // 모드 3: 반도체 웨이퍼 파동 (60×60 맞춤)
     // ======================================================================
     else if (currentMode.value === 'wafer') {
         const timeScale = tickCount * 0.12;
@@ -549,7 +549,7 @@ function renderFrame(now: number): void {
         }
     }
     // ======================================================================
-    // 모드 4: 생명 게임 (64×60 맞춤)
+    // 모드 4: 생명 게임 (60×60 맞춤)
     // ======================================================================
     else if (currentMode.value === 'life') {
         if (tickCount % 4 === 0) {
