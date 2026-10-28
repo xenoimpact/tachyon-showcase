@@ -10,10 +10,13 @@
     },
     "dependencies": {
         "@tachyon-showcase/shared": "workspace:*",
+        "@vueuse/core": "^15.0.0",
         "comlink": "^4.4.2",
         "exceljs": "^4.4.0",
         "pinia": "^4.0.3",
         "tachyon.vue": "^1.1.7",
+        "vrix.js": "^1.5.8",
+        "vrix.vue": "^1.4.3",
         "vue": "^3.5.43"
     },
     "devDependencies": {

@@ -1,0 +1,255 @@
+/**
+ * 타키온 필터 헤더 렌더러 및 필터 팝업 공통 스타일
+ * 색상은 themes.css 시맨틱 토큰만 참조하여 라이트/다크/스틸블루 테마를 함께 지원합니다.
+ * 필터 타입별 헤더 렌더러가 동일한 클래스를 공유하므로 scoped 대신 전역 스타일로 관리합니다.
+ */
+
+/* ==========================================================================
+   Vrix 컴포넌트 색상 토큰을 쇼케이스 테마 토큰에 연결
+   ========================================================================== */
+[data-theme] {
+    --x-text-color-gray: var(--app-text);
+    --x-text-color-black: var(--app-text);
+    --x-text-color-highlight: var(--nav-tab-active-text);
+    --x-border-color: var(--card-border);
+    --x-border-color-outer: var(--btn-outline-hover-border);
+    --x-border-color-focus: var(--nav-tab-active-text);
+    --x-bg-color: var(--card-bg);
+    --x-bg-color-hover: var(--btn-outline-hover-bg);
+    --x-bg-color-select: var(--nav-index-active-bg);
+    --x-size-font-md: 12px;
+    --x-border-radius: 6px;
+}
+
+/* ==========================================================================
+   필터 헤더 렌더러
+   ========================================================================== */
+.filter-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    height: 100%;
+    padding: 0 4px 0 8px;
+    box-sizing: border-box;
+    color: var(--grid-header-text);
+    font-size: 12px;
+}
+
+.filter-header__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filter-header__sort {
+    flex-shrink: 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.filter-header__button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-desc);
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.filter-header__button:hover {
+    background-color: var(--btn-outline-hover-bg);
+    color: var(--grid-header-text);
+}
+
+.filter-header__button.is-active {
+    border-color: var(--tag-border);
+    background-color: var(--tag-bg);
+    color: var(--nav-tab-active-text);
+}
+
+/* ==========================================================================
+   필터 팝업 공통
+   ========================================================================== */
+.filter-popup {
+    width: 240px;
+    padding: 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+    color: var(--app-text);
+    font-size: 12px;
+}
+
+.filter-popup__title {
+    margin-bottom: 8px;
+    color: var(--text-desc);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.filter-popup__input {
+    width: 100%;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--btn-outline-border);
+    border-radius: 6px;
+    background-color: var(--btn-outline-bg);
+    box-sizing: border-box;
+    color: var(--app-text);
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.filter-popup__input::placeholder {
+    color: var(--text-desc);
+}
+
+.filter-popup__input:focus {
+    border-color: var(--nav-tab-active-text);
+}
+
+.filter-popup__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.filter-popup__select {
+    width: 100%;
+}
+
+/* 값 목록(Set) 필터 */
+.filter-popup__list {
+    margin: 8px 0 12px;
+    padding: 4px 0;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+}
+
+.filter-popup__list-header {
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+    border-bottom: 1px dashed var(--card-border);
+    font-weight: 600;
+}
+
+.filter-popup__list .x-list {
+    background-color: transparent;
+}
+
+.filter-popup__check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 4px 2px;
+    cursor: pointer;
+}
+
+.filter-popup__check input {
+    flex-shrink: 0;
+    margin: 0;
+    accent-color: var(--nav-tab-active-text);
+}
+
+.filter-popup__check-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.filter-popup__count {
+    margin-left: 2px;
+    color: var(--text-desc);
+    font-size: 11px;
+}
+
+.filter-popup__empty {
+    padding: 16px 0;
+    color: var(--text-desc);
+    text-align: center;
+}
+
+/* 하단 버튼 영역 */
+.filter-popup__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.filter-popup__footer--between {
+    justify-content: space-between;
+}
+
+.filter-popup__actions {
+    display: flex;
+    gap: 6px;
+}
+
+.filter-popup__button {
+    height: 28px;
+    padding: 0 12px;
+    border: 1px solid var(--btn-outline-border);
+    border-radius: 6px;
+    background-color: var(--btn-outline-bg);
+    color: var(--btn-outline-text);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.filter-popup__button:hover {
+    border-color: var(--btn-outline-hover-border);
+    background-color: var(--btn-outline-hover-bg);
+}
+
+.filter-popup__button--primary {
+    border-color: var(--nav-tab-active-text);
+    background-color: var(--nav-tab-active-text);
+    color: #ffffff;
+}
+
+.filter-popup__button--primary:hover {
+    border-color: var(--nav-tab-active-text);
+    background-color: var(--nav-tab-active-text);
+    opacity: 0.9;
+}
+
+.filter-popup__button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.filter-popup__button--link {
+    padding: 0 4px;
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--text-desc);
+}
+
+.filter-popup__button--link:hover {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--app-text);
+    text-decoration: underline;
+}

@@ -1,6 +1,6 @@
-# 화면 07: 픽셀 도트 매트릭스 & 전광판 관제
+# 화면 08: 픽셀 도트 매트릭스 & 전광판 관제
 
-- **스펙 문서**: [.agents/specs/07-pixel-matrix.md](../../.agents/specs/07-pixel-matrix.md)
+- **스펙 문서**: [.agents/specs/08-pixel-matrix.md](../../.agents/specs/08-pixel-matrix.md)
 - **데모 뷰**: `packages/vue/src/views/PixelMatrixDemo.vue`
 - **렌더러**: `packages/vue/src/components/renderers/CanvasPixelRenderer.ts`
 
@@ -13,6 +13,6 @@
   - [x] 콘웨이 생명 게임(Conway's Game of Life) 셀룰러 오토마타 시뮬레이션
   - [x] 7초 주기 무한 자동 순환(Auto-Cycle) 및 실시간 프로그레스 바 연출
   - [x] 60 FPS 및 프레임 소요시간(0.1ms) 실시간 계측 패널
-- [x] `packages/vue/src/App.vue` 07번 메뉴 등록 및 라우팅 연결
-- [x] `packages/vue/src/views/IntroductionView.vue` 07번 데모 카드 추가
+- [x] `packages/vue/src/App.vue` 08번 메뉴 등록 및 라우팅 연결
+- [x] `packages/vue/src/views/IntroductionView.vue` 08번 데모 카드 추가
 - [ ] 전체 빌드(`pnpm build`) 검증

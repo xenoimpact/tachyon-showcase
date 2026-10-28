@@ -1,4 +1,4 @@
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import {defineStore} from 'pinia';
 
 /** 지원하는 타키온 그리드 테마 식별자 유니온 타입입니다. */
@@ -22,6 +22,18 @@ export const useThemeStore = defineStore('theme', () => {
         {id: 'dark', label: '다크', icon: '🌙'},
         {id: 'steel-blue', label: '스틸블루', icon: '🏭'}
     ];
+
+    /**
+     * body 하위로 분리되어 렌더링되는 팝업(Vrix popup-stage)에도 테마 변수가 적용되도록
+     * 문서 루트(html)에 현재 테마를 함께 반영합니다.
+     */
+    watch(
+        currentTheme,
+        theme => {
+            document.documentElement.dataset.theme = theme;
+        },
+        {immediate: true}
+    );
 
     /**
      * 현재 적용된 테마를 변경합니다.

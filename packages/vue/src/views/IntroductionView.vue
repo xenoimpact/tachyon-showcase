@@ -437,8 +437,17 @@ const demoCards: DemoCard[] = [
         ready: true
     },
     {
-        id: 'tree',
+        id: 'filter',
         badge: '데모 05',
+        title: '헤더 필터링 (값 목록 & 문자열 조건)',
+        description:
+            '컬럼 헤더에서 엑셀처럼 값 목록을 체크하거나 포함·시작·끝 문자 조건을 입력해 여러 열의 데이터를 함께 걸러냅니다.',
+        tags: ['값 목록 필터', '문자열 조건', '다중 열 필터', '건수 표시'],
+        ready: true
+    },
+    {
+        id: 'tree',
+        badge: '데모 06',
         title: '계층형 트리 그리드 (BOM / 조직도)',
         description:
             '부모-자식 다단계 계층 트리 구조, 노드 단계별 접기/펼치기 및 계층 데이터 내에서도 동일한 틀고정과 정렬 기능을 제공합니다.',
@@ -447,7 +456,7 @@ const demoCards: DemoCard[] = [
     },
     {
         id: 'realtime',
-        badge: '데모 06',
+        badge: '데모 07',
         title: '실시간 데이터 갱신 (텔레메트리 관제)',
         description:
             '5,000대 설비 × 49개 센서 데이터에서 초당 최대 3,000 셀이 번쩍이는 실시간 부하에도 60 FPS 무지연 렌더링을 유지합니다.',
@@ -456,7 +465,7 @@ const demoCards: DemoCard[] = [
     },
     {
         id: 'pixel',
-        badge: '데모 07',
+        badge: '데모 08',
         title: '픽셀 도트 매트릭스 & 전광판 관제',
         description:
             '각 셀을 정밀 LED 도트로 전환하여 수천 개 셀 위로 흐르는 전광판 텍스트 티커, 반도체 웨이퍼 파동, 콘웨이 생명 게임을 시연합니다.',
