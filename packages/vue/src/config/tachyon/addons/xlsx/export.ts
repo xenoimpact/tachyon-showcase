@@ -28,6 +28,9 @@ function normalizeColumns(columns: Array<ColumnJSON & {boxMode?: boolean}>): Arr
         if (children && children.length > 0) {
             if (column.boxMode === true) {
                 children.forEach((child, index) => {
+                    // 가져오기 시 원래 필드와 계층으로 되돌릴 수 있도록 기록합니다.
+                    child.sourceField = child.dataField;
+                    child.treeLevel = index;
                     child.dataField = generateChildField(child.dataField, index);
                 });
             }
@@ -63,6 +66,7 @@ function isNumberColumn(column: GridColumn): boolean {
 /**
  * Web Worker(postMessage)로 안전하게 전송하기 위해
  * 컴포넌트 객체(itemRenderer), 함수(labelFunction) 등 복제 불가능한 프로퍼티를 제거합니다.
+ * 컬럼 인스턴스에서 필요한 값만 읽어 새 객체를 만들므로 원본 그리드 컬럼은 변경되지 않습니다.
  */
 function sanitizeColumn(col: any): ColumnJSON {
     if (!col) {
@@ -74,7 +78,9 @@ function sanitizeColumn(col: any): ColumnJSON {
         width: typeof col.width === 'number' ? col.width : 100,
         visible: col.visible !== false,
         open: col.open !== false,
-        boxMode: col.boxMode
+        boxMode: col.boxMode,
+        // 트리 컬럼만 boxMode 속성을 가지며, false이면 심플 인덴트 모드입니다.
+        isTree: col.boxMode === false
     };
     if (col.styles) {
         clean.styles = {
@@ -97,14 +103,12 @@ function sanitizeColumn(col: any): ColumnJSON {
 }
 
 /**
- * 워커에서 사용할 컬럼 정보 배열을 생성합니다.
+ * 워커에서 사용할 컬럼 정보 배열을 생성합니다. 내보내기와 가져오기가 같은 열 구성을 쓰도록 공유합니다.
  * @param grid 데이터 그리드 인스턴스
  * @returns 컬럼 JSON 배열입니다.
  */
-function toColumns(grid: DataGrid): Array<ColumnJSON> {
-    const rawCols = grid.columns.map((column: GridColumn) => column.toJSON());
-    const normalized = normalizeColumns(rawCols);
-    return normalized.map(sanitizeColumn);
+export function toColumns(grid: DataGrid): Array<ColumnJSON> {
+    return normalizeColumns(grid.columns.map(sanitizeColumn));
 }
 
 /**
@@ -208,6 +212,19 @@ function toRows(grid: DataGrid): Array<Record<string, any>> {
     });
 }
 
+/**
+ * 트리 그리드의 행별 계층 깊이(0부터 시작) 배열을 생성합니다. 트리 그리드가 아니면 undefined를 반환합니다.
+ * @param grid 데이터 그리드 인스턴스
+ * @returns 행별 계층 깊이 배열입니다.
+ */
+function toLevels(grid: DataGrid): Array<number> | undefined {
+    if (!(grid instanceof TreeGrid)) {
+        return undefined;
+    }
+    const collection = grid.collection as any;
+    return collection.toArray().map((item: any) => collection.getNodeLevel(toRaw(item)));
+}
+
 export default {
     /**
      * 컴포넌트 생성 시 초기화를 수행합니다.
@@ -231,6 +248,7 @@ export default {
         const columns = toColumns(this.grid);
         const mergeCells = toMergeCells(this.grid);
         const rows = toRows(this.grid);
+        const levels = toLevels(this.grid);
 
         // Structured Clone 사전 진단 (콘솔 출력)
         try {
@@ -254,7 +272,7 @@ export default {
         const api = wrap<XlsxWorkerApi>(worker);
 
         try {
-            const result = await api.write({columns, rows, mergeCells}, options);
+            const result = await api.write({columns, rows, mergeCells, levels}, options);
             downloadBlob(result, name);
             return result;
         } catch (error) {

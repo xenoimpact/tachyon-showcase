@@ -3,11 +3,7 @@ import {wrap} from 'comlink';
 import {DataGrid} from 'tachyon.vue';
 import XlsxWorker from '@/workers/XlsxWorker?worker';
 import type {XlsxWorkerApi} from '@/workers/XlsxWorker';
-import type {ColumnJSON} from './types';
-
-function toColumns(grid: DataGrid): Array<ColumnJSON> {
-    return grid.columns.map((column) => column.toJSON());
-}
+import {toColumns} from './export';
 
 export default {
     /**
