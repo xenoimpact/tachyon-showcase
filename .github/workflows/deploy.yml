@@ -34,6 +34,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          # lockfile이 없으므로 package.json 해시를 캐시 키로 사용하여 pnpm 저장소를 캐시합니다.
+          cache: 'pnpm'
+          cache-dependency-path: '**/package.json'
 
       # pnpm-lock.yaml을 저장소에서 관리하지 않으므로 lockfile 없이 설치합니다.
       # (CI 환경에서 pnpm은 기본적으로 lockfile을 요구하므로 --no-frozen-lockfile을 명시합니다.)

@@ -45,4 +45,3 @@ ehthumbs.db
 *.temp
 
 .agents/issues/tachyon-core-and-vue-issues.md
-pnpm-lock.yaml
