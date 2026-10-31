@@ -7,7 +7,11 @@
                 <template v-if="!isNotFound">
                     <div class="filter-popup__list-header">
                         <label class="filter-popup__check">
-                            <input type="checkbox" :checked="isAllChecked" @change="selectAll(($event.target as HTMLInputElement).checked)" />
+                            <input
+                                type="checkbox"
+                                :checked="isAllChecked"
+                                @change="selectAll(($event.target as HTMLInputElement).checked)"
+                            />
                             <span>{{ debouncedKeyword ? '검색 결과 모두 선택' : '모두 선택' }}</span>
                         </label>
                         <label v-if="debouncedKeyword" class="filter-popup__check">
@@ -19,7 +23,11 @@
                     <vx-list :items="displayItems" :row-count="Math.min(LIST_ROW_COUNT, displayItems.length || 1)">
                         <template #default="{item}">
                             <label class="filter-popup__check">
-                                <input type="checkbox" :checked="selectedValues.has(item.value)" @change="selectItem(item, ($event.target as HTMLInputElement).checked)" />
+                                <input
+                                    type="checkbox"
+                                    :checked="selectedValues.has(item.value)"
+                                    @change="selectItem(item, ($event.target as HTMLInputElement).checked)"
+                                />
                                 <span class="filter-popup__check-text" :title="item.label">
                                     {{ item.label }}<span class="filter-popup__count">({{ item.count }})</span>
                                 </span>
@@ -32,7 +40,14 @@
 
             <div class="filter-popup__footer">
                 <button type="button" class="filter-popup__button" @click="close()">취소</button>
-                <button type="button" class="filter-popup__button filter-popup__button--primary" :disabled="selectedValues.size === 0" @click="applyFilter">적용</button>
+                <button
+                    type="button"
+                    class="filter-popup__button filter-popup__button--primary"
+                    :disabled="selectedValues.size === 0"
+                    @click="applyFilter"
+                >
+                    적용
+                </button>
             </div>
         </div>
     </vx-popup>
@@ -71,16 +86,20 @@ const isIncludeSelected = ref(false);
 
 const displayItems = computed(() => {
     const word = debouncedKeyword.value.toLowerCase();
-    return word ? items.value.filter(item => item.label.toLowerCase().includes(word)) : items.value;
+    return word ? items.value.filter((item) => item.label.toLowerCase().includes(word)) : items.value;
 });
 
-const isAllChecked = computed(() => displayItems.value.length > 0 && displayItems.value.every(item => selectedValues.value.has(item.value)));
+const isAllChecked = computed(
+    () => displayItems.value.length > 0 && displayItems.value.every((item) => selectedValues.value.has(item.value))
+);
 
-const isNotFound = computed(() => !!debouncedKeyword.value && displayItems.value.length === 0 && items.value.length > 0);
+const isNotFound = computed(
+    () => !!debouncedKeyword.value && displayItems.value.length === 0 && items.value.length > 0
+);
 
 /** 검색어가 바뀌면 검색 결과 전체를 선택하고, 검색어를 지우면 기존 필터 값으로 되돌립니다. */
-watch(debouncedKeyword, word => {
-    selectedValues.value = new Set(word ? displayItems.value.map(item => item.value) : getAppliedValues());
+watch(debouncedKeyword, (word) => {
+    selectedValues.value = new Set(word ? displayItems.value.map((item) => item.value) : getAppliedValues());
     isIncludeSelected.value = false;
 });
 
@@ -88,7 +107,7 @@ watch(debouncedKeyword, word => {
  * 팝업을 엽니다. 팝업이 닫히면 완료되는 Promise를 반환합니다.
  */
 function open(): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         popupRef.value
             .open()
             .opened(() => {
@@ -148,7 +167,9 @@ function loadItems(): void {
         }
     });
 
-    items.value = Array.from(itemMap.values()).sort((a, b) => a.label.localeCompare(b.label, undefined, {numeric: true, sensitivity: 'base'}));
+    items.value = Array.from(itemMap.values()).sort((a, b) =>
+        a.label.localeCompare(b.label, undefined, {numeric: true, sensitivity: 'base'})
+    );
     selectedValues.value = new Set(getAppliedValues());
 }
 
@@ -178,7 +199,7 @@ function selectItem(item: FilterItem, checked: boolean): void {
  * @param checked 선택 여부
  */
 function selectAll(checked: boolean): void {
-    selectedValues.value = new Set(checked ? displayItems.value.map(item => item.value) : []);
+    selectedValues.value = new Set(checked ? displayItems.value.map((item) => item.value) : []);
 }
 
 defineExpose({

@@ -1,6 +1,6 @@
-# 화면 08: 픽셀 도트 매트릭스 & 전광판 관제
+# 화면 09: 픽셀 도트 매트릭스 & 전광판 관제
 
-- **스펙 문서**: [.agents/specs/08-pixel-matrix.md](../../.agents/specs/08-pixel-matrix.md)
+- **스펙 문서**: [.agents/specs/09-pixel-matrix.md](../../.agents/specs/09-pixel-matrix.md)
 - **데모 뷰**: `packages/vue/src/views/PixelMatrixDemo.vue`
 - **렌더러**: `packages/vue/src/components/renderers/CanvasPixelRenderer.ts`
 

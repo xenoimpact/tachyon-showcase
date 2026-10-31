@@ -103,55 +103,33 @@
                 </nav>
             </aside>
 
-            <!-- 우측 메인 데모 컨텐츠 영역 (동적 컴포넌트 단일 렌더링) -->
+            <!-- 우측 메인 데모 컨텐츠 영역 (라우트별 단일 렌더링) -->
             <main class="flex-1 overflow-hidden flex flex-col min-w-0">
-                <component
-                    :is="currentView"
-                    :key="activeMenu"
-                    :menu-name="currentMenuName"
-                    @select-menu="onSelectMenu"
-                />
+                <RouterView v-slot="{Component: routeView}">
+                    <component
+                        :is="routeView"
+                        :key="activeMenu"
+                        :menu-name="currentMenuName"
+                        @select-menu="onSelectMenu"
+                    />
+                </RouterView>
             </main>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref, type Component} from 'vue';
+import {computed} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
 import {useThemeStore} from '@/stores/themeStore';
-import IntroductionView from '@/views/IntroductionView.vue';
-import BasicGridDemo from '@/views/BasicGridDemo.vue';
-import VirtualScrollDemo from '@/views/VirtualScrollDemo.vue';
-import CellEditorDemo from '@/views/CellEditorDemo.vue';
-import CellVisualDemo from '@/views/CellVisualDemo.vue';
-import FilterGridDemo from '@/views/FilterGridDemo.vue';
-import TreeGridDemo from '@/views/TreeGridDemo.vue';
-import RealtimeTelemetryDemo from '@/views/RealtimeTelemetryDemo.vue';
-import PixelMatrixDemo from '@/views/PixelMatrixDemo.vue';
-import DemoPlaceholder from '@/components/common/DemoPlaceholder.vue';
-
-interface MenuItem {
-    id: string;
-    index: string;
-    name: string;
-    component?: Component;
-}
-
-const menuItems: MenuItem[] = [
-    {id: 'intro', index: '00', name: '제품 개요 및 기능 가이드', component: IntroductionView},
-    {id: 'basic', index: '01', name: '기본 그리드 (멀티헤더 & 고정)', component: BasicGridDemo},
-    {id: 'virtual', index: '02', name: '대용량 가상 스크롤', component: VirtualScrollDemo},
-    {id: 'editor', index: '03', name: '엑셀형 셀 에디터 & 연동', component: CellEditorDemo},
-    {id: 'visual', index: '04', name: '셀 시각화', component: CellVisualDemo},
-    {id: 'filter', index: '05', name: '헤더 필터링', component: FilterGridDemo},
-    {id: 'tree', index: '06', name: '계층형 트리 그리드', component: TreeGridDemo},
-    {id: 'realtime', index: '07', name: '실시간 데이터 갱신', component: RealtimeTelemetryDemo},
-    {id: 'pixel', index: '08', name: '픽셀 매트릭스 & 전광판', component: PixelMatrixDemo}
-];
+import {HOME_MENU_ID, menuItems, type MenuItem} from '@/router';
 
 const themeStore = useThemeStore();
+const route = useRoute();
+const router = useRouter();
 
-const activeMenu = ref<string>('intro');
+/** 현재 라우트 이름을 활성 메뉴 id로 사용합니다. */
+const activeMenu = computed<string>(() => (typeof route.name === 'string' ? route.name : HOME_MENU_ID));
 
 const currentMenu = computed<MenuItem | undefined>(() => {
     return menuItems.find((m) => m.id === activeMenu.value);
@@ -161,15 +139,11 @@ const currentMenuName = computed<string>(() => {
     return currentMenu.value ? currentMenu.value.name : '';
 });
 
-const currentView = computed<Component>(() => {
-    return currentMenu.value?.component || DemoPlaceholder;
-});
-
 /**
- * 메뉴를 선택하고 활성화합니다.
+ * 메뉴를 선택하고 해당 화면 경로로 이동합니다.
  * @param menuId 선택할 메뉴의 식별자
  */
 function onSelectMenu(menuId: string): void {
-    activeMenu.value = menuId;
+    void router.push({name: menuId});
 }
 </script>

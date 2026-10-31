@@ -17,7 +17,8 @@
         "tachyon.vue": "^1.1.7",
         "vrix.js": "^1.5.8",
         "vrix.vue": "^1.4.3",
-        "vue": "^3.5.43"
+        "vue": "^3.5.43",
+        "vue-router": "^5.4.0"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.3.3",

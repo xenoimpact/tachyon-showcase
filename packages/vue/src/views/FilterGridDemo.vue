@@ -26,14 +26,23 @@
         <!-- 액션 버튼 툴바 슬롯 -->
         <template #actions>
             <div class="flex items-center gap-2">
-                <button class="btn-demo btn-demo-outline" type="button" :disabled="activeFilterCount === 0" @click="clearAllFilters">
+                <button
+                    class="btn-demo btn-demo-outline"
+                    type="button"
+                    :disabled="activeFilterCount === 0"
+                    @click="clearAllFilters"
+                >
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" />
                     </svg>
                     필터 초기화
                 </button>
 
-                <button class="btn-demo bg-emerald-600 hover:bg-emerald-700 text-white border-none ml-1" type="button" @click="exportToExcel">
+                <button
+                    class="btn-demo bg-emerald-600 hover:bg-emerald-700 text-white border-none ml-1"
+                    type="button"
+                    @click="exportToExcel"
+                >
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
                     </svg>
@@ -43,17 +52,56 @@
         </template>
 
         <!-- 타키온 그리드 영역 (값 목록 / 문자열 조건 헤더 필터) -->
-        <TachyonGrid ref="gridRef" :items="items" :frozen-left="2" :frozen-right="1" :theme="themeStore.currentTheme" class="w-full h-full">
-            <TachyonColumn data-field="id" header-text="주문번호" :width="130" :styles="{textAlign: 'center'}" sortable />
+        <TachyonGrid
+            ref="gridRef"
+            :items="items"
+            :frozen-left="2"
+            :frozen-right="1"
+            :theme="themeStore.currentTheme"
+            class="w-full h-full"
+        >
+            <TachyonColumn
+                data-field="id"
+                header-text="주문번호"
+                :width="130"
+                :styles="{textAlign: 'center'}"
+                sortable
+            />
             <TachyonTextFilterColumn data-field="customer" header-text="고객사명" :width="170" />
             <TachyonTextFilterColumn data-field="projectName" header-text="프로젝트/품목명" :width="300" />
             <TachyonSetFilterColumn data-field="category" header-text="분류" :width="140" />
             <TachyonSetFilterColumn data-field="department" header-text="담당부서" :width="170" text-align="left" />
             <TachyonSetFilterColumn data-field="priority" header-text="우선순위" :width="110" />
-            <TachyonNumberColumn data-field="quantity" header-text="수량" :width="90" pattern="0,0" :styles="{textAlign: 'right'}" sortable />
-            <TachyonNumberColumn data-field="totalAmount" header-text="합계금액" :width="160" pattern="0,0" :styles="{textAlign: 'right'}" sortable />
-            <TachyonDateColumn data-field="orderDate" header-text="주문일자" :width="120" pattern="YYYY-MM-DD" :styles="{textAlign: 'center'}" sortable />
-            <TachyonSetFilterColumn data-field="status" header-text="진행상태" :width="130" :item-renderer="StatusBadgeRenderer" />
+            <TachyonNumberColumn
+                data-field="quantity"
+                header-text="수량"
+                :width="90"
+                pattern="0,0"
+                :styles="{textAlign: 'right'}"
+                sortable
+            />
+            <TachyonNumberColumn
+                data-field="totalAmount"
+                header-text="합계금액"
+                :width="160"
+                pattern="0,0"
+                :styles="{textAlign: 'right'}"
+                sortable
+            />
+            <TachyonDateColumn
+                data-field="orderDate"
+                header-text="주문일자"
+                :width="120"
+                pattern="YYYY-MM-DD"
+                :styles="{textAlign: 'center'}"
+                sortable
+            />
+            <TachyonSetFilterColumn
+                data-field="status"
+                header-text="진행상태"
+                :width="130"
+                :item-renderer="StatusBadgeRenderer"
+            />
         </TachyonGrid>
     </DemoContainer>
 </template>

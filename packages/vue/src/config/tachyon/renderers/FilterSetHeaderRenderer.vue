@@ -3,9 +3,18 @@
         <span class="filter-header__label" :title="state?.label">{{ state?.label }}</span>
         <span v-if="sortType === 'asc'" class="filter-header__sort" title="오름차순 정렬">↑</span>
         <span v-else-if="sortType === 'desc'" class="filter-header__sort" title="내림차순 정렬">↓</span>
-        <button type="button" class="filter-header__button" :class="{'is-active': isFiltered}" title="값 목록 필터" @mousedown.prevent @click="togglePopup">
+        <button
+            type="button"
+            class="filter-header__button"
+            :class="{'is-active': isFiltered}"
+            title="값 목록 필터"
+            @mousedown.prevent
+            @click="togglePopup"
+        >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                <path d="M2.5 3h11a.5.5 0 0 1 .39.81L9.5 9.3V13a.5.5 0 0 1-.28.45l-2 1A.5.5 0 0 1 6.5 14V9.3L2.11 3.81A.5.5 0 0 1 2.5 3z" />
+                <path
+                    d="M2.5 3h11a.5.5 0 0 1 .39.81L9.5 9.3V13a.5.5 0 0 1-.28.45l-2 1A.5.5 0 0 1 6.5 14V9.3L2.11 3.81A.5.5 0 0 1 2.5 3z"
+                />
             </svg>
         </button>
         <filter-set-popup ref="popupRef" :anchor="rootRef" anchor-align="left bottom" />

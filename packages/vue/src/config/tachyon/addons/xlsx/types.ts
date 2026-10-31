@@ -38,3 +38,42 @@ export type CellPositionJSON = {
 
 /** xlsx 내보내기 옵션 타입입니다. */
 export type Options = {date: Date; hideHeader: boolean};
+
+/** 워커 내부 내보내기 구간별 소요시간(ms) 타입입니다. */
+export type XlsxWorkerMetrics = {
+    /** 워크북 생성 및 헤더 작성 */
+    header: number;
+    /** 데이터 행 추가 */
+    rows: number;
+    /** 트리 계층(행 그룹·들여쓰기) 적용 */
+    outline: number;
+    /** 셀 병합 적용 */
+    merge: number;
+    /** 테두리·배경색 적용 */
+    style: number;
+    /** 파일 생성 (XML 변환 및 압축) */
+    zip: number;
+    /** 워커 내부 전체 */
+    total: number;
+};
+
+/** 내보내기 전체 구간별 소요시간(ms) 및 결과 정보 타입입니다. */
+export type XlsxExportMetrics = {
+    /** 내보낸 데이터 행 수 */
+    rowCount: number;
+    /** 생성된 파일 크기(byte) */
+    fileSize: number;
+    /** 메인 스레드: 컬럼·병합·행 데이터 추출 */
+    extract: number;
+    /** 메인 스레드: 전송 전 진단 복제 */
+    clone: number;
+    /** 워커 시작 및 데이터 전송 (전체 왕복 시간 - 워커 내부 시간) */
+    transfer: number;
+    /** 워커 내부 구간 */
+    worker: XlsxWorkerMetrics;
+    /** 전체 소요시간 */
+    total: number;
+};
+
+/** 내보내기 결과 타입입니다. */
+export type XlsxExportResult = {blob: Blob; metrics: XlsxExportMetrics};

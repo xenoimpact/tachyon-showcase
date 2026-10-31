@@ -29,7 +29,7 @@ export const useThemeStore = defineStore('theme', () => {
      */
     watch(
         currentTheme,
-        theme => {
+        (theme) => {
             document.documentElement.dataset.theme = theme;
         },
         {immediate: true}

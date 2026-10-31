@@ -6,7 +6,9 @@
         <!-- 2-Tier 슬림 툴바 -->
         <template #toolbar>
             <!-- 1단: 모드 선택 & 실시간 애니메이션 제어 -->
-            <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs">
+            <div
+                class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-xs"
+            >
                 <div class="flex items-center gap-2">
                     <span class="font-semibold text-slate-700 dark:text-slate-200">시연 모드:</span>
                     <div class="inline-flex rounded-lg p-0.5 bg-slate-200 dark:bg-slate-800">
@@ -15,9 +17,11 @@
                             :key="mode.id"
                             type="button"
                             class="px-2.5 py-1 rounded-md text-xs font-medium transition-all"
-                            :class="currentMode === mode.id
-                                ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
-                                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'"
+                            :class="
+                                currentMode === mode.id
+                                    ? 'bg-white dark:bg-slate-700 text-emerald-600 dark:text-emerald-400 shadow-sm'
+                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                            "
                             @click="selectManualMode(mode.id)"
                         >
                             {{ mode.label }}
@@ -28,9 +32,11 @@
                     <button
                         type="button"
                         class="ml-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium border transition-colors"
-                        :class="isPlaying
-                            ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-400 dark:border-rose-900 hover:bg-rose-100'
-                            : 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900 hover:bg-emerald-100'"
+                        :class="
+                            isPlaying
+                                ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/40 dark:text-rose-400 dark:border-rose-900 hover:bg-rose-100'
+                                : 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900 hover:bg-emerald-100'
+                        "
                         @click="togglePlay"
                     >
                         <span>{{ isPlaying ? '⏸ 일시정지' : '▶ 재생' }}</span>
@@ -40,12 +46,17 @@
                     <button
                         type="button"
                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium border transition-all"
-                        :class="isAutoCycle
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500 dark:text-emerald-400 dark:border-emerald-500 shadow-xs'
-                            : 'bg-white text-slate-600 border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:bg-slate-100'"
+                        :class="
+                            isAutoCycle
+                                ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500 dark:text-emerald-400 dark:border-emerald-500 shadow-xs'
+                                : 'bg-white text-slate-600 border-slate-300 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700 hover:bg-slate-100'
+                        "
                         @click="toggleAutoCycle"
                     >
-                        <span class="w-1.5 h-1.5 rounded-full" :class="isAutoCycle ? 'bg-emerald-500 animate-ping' : 'bg-slate-400'"></span>
+                        <span
+                            class="w-1.5 h-1.5 rounded-full"
+                            :class="isAutoCycle ? 'bg-emerald-500 animate-ping' : 'bg-slate-400'"
+                        ></span>
                         <span>🔄 자동 순환: {{ isAutoCycle ? 'ON' : 'OFF' }}</span>
                     </button>
                 </div>
@@ -66,7 +77,9 @@
                 <div v-if="currentMode === 'radar'" class="flex items-center gap-3">
                     <span class="text-slate-500 dark:text-slate-400">탐지 타깃:</span>
                     <div class="flex items-center gap-2 font-mono">
-                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-500 font-semibold text-[11px]">
+                        <span
+                            class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-500 font-semibold text-[11px]"
+                        >
                             🚨 경보 타깃: {{ detectedCount }}대
                         </span>
                         <span class="text-slate-400 text-[11px]">반경 28NM (360° Sweep)</span>
@@ -75,23 +88,37 @@
             </div>
 
             <!-- 2단: 실시간 렌더링 성능 모니터링 패널 및 자동 순환 게이지 바 -->
-            <div class="relative flex flex-wrap items-center justify-between gap-4 px-4 py-2 bg-white dark:bg-slate-950/60 text-xs border-b border-slate-100 dark:border-slate-800">
+            <div
+                class="relative flex flex-wrap items-center justify-between gap-4 px-4 py-2 bg-white dark:bg-slate-950/60 text-xs border-b border-slate-100 dark:border-slate-800"
+            >
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full" :class="isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'"></span>
+                        <span
+                            class="w-2 h-2 rounded-full"
+                            :class="isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'"
+                        ></span>
                         <span class="text-slate-500 dark:text-slate-400">매트릭스 규모:</span>
-                        <span class="font-mono font-semibold text-slate-800 dark:text-slate-200">60열 × 60행 (3,600개 픽셀 셀 - 1:1 정방형)</span>
+                        <span class="font-mono font-semibold text-slate-800 dark:text-slate-200"
+                            >60열 × 60행 (3,600개 픽셀 셀 - 1:1 정방형)</span
+                        >
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="text-slate-500 dark:text-slate-400">초당 프레임:</span>
-                        <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm">{{ fps }} FPS</span>
+                        <span class="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-sm"
+                            >{{ fps }} FPS</span
+                        >
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="text-slate-500 dark:text-slate-400">프레임 렌더 소요:</span>
-                        <span class="font-mono font-semibold text-indigo-600 dark:text-indigo-400">{{ frameTimeMs }} ms</span>
+                        <span class="font-mono font-semibold text-indigo-600 dark:text-indigo-400"
+                            >{{ frameTimeMs }} ms</span
+                        >
                     </div>
                     <!-- 자동 순환 안내 카운트다운 -->
-                    <div v-if="isAutoCycle && isPlaying" class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 font-mono text-[11px]">
+                    <div
+                        v-if="isAutoCycle && isPlaying"
+                        class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300 font-mono text-[11px]"
+                    >
                         <span>다음 모드 전환까지:</span>
                         <span class="font-bold">{{ cycleCountdownSec }}초</span>
                     </div>
@@ -102,7 +129,11 @@
                 </div>
 
                 <!-- 자동 순환 시 하단에서 부드럽게 차오르는 슬림 프로그레스 게이지 바 -->
-                <div v-if="isAutoCycle && isPlaying" class="absolute bottom-0 left-0 h-[2px] bg-emerald-500/80 transition-all duration-100 ease-linear" :style="{width: `${cycleProgress}%`}"></div>
+                <div
+                    v-if="isAutoCycle && isPlaying"
+                    class="absolute bottom-0 left-0 h-[2px] bg-emerald-500/80 transition-all duration-100 ease-linear"
+                    :style="{width: `${cycleProgress}%`}"
+                ></div>
             </div>
         </template>
 

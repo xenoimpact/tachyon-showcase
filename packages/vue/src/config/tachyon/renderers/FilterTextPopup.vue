@@ -3,15 +3,36 @@
         <div class="filter-popup">
             <div class="filter-popup__field">
                 <span class="filter-popup__title">조건</span>
-                <vx-combobox v-model="operator" class="filter-popup__select" :items="OPERATOR_OPTIONS" label-field="label" value-field="value" require-selection />
-                <input ref="keywordInputRef" v-model="keyword" class="filter-popup__input" placeholder="검색할 문자 입력" @keydown.enter="onKeyDownEnter" />
+                <vx-combobox
+                    v-model="operator"
+                    class="filter-popup__select"
+                    :items="OPERATOR_OPTIONS"
+                    label-field="label"
+                    value-field="value"
+                    require-selection
+                />
+                <input
+                    ref="keywordInputRef"
+                    v-model="keyword"
+                    class="filter-popup__input"
+                    placeholder="검색할 문자 입력"
+                    @keydown.enter="onKeyDownEnter"
+                />
             </div>
 
             <div class="filter-popup__footer filter-popup__footer--between">
-                <button type="button" class="filter-popup__button filter-popup__button--link" @click="clearFilter">필터 해제</button>
+                <button type="button" class="filter-popup__button filter-popup__button--link" @click="clearFilter">
+                    필터 해제
+                </button>
                 <div class="filter-popup__actions">
                     <button type="button" class="filter-popup__button" @click="close()">취소</button>
-                    <button type="button" class="filter-popup__button filter-popup__button--primary" @click="applyFilter">적용</button>
+                    <button
+                        type="button"
+                        class="filter-popup__button filter-popup__button--primary"
+                        @click="applyFilter"
+                    >
+                        적용
+                    </button>
                 </div>
             </div>
         </div>
@@ -51,7 +72,7 @@ function open(): Promise<void> {
     const filter = column.filterInstance;
     keyword.value = filter.canCompare ? filter.getValues()[0] : '';
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         popupRef.value
             .open()
             .opened(() => {

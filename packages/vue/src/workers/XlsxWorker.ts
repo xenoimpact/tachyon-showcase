@@ -1,7 +1,13 @@
 /// <reference lib="webworker" />
 import {expose} from 'comlink';
 import {Column as WorkColumn, Workbook, Alignment, Borders, Border} from 'exceljs';
-import type {CellPositionJSON, ColumnJSON, Options, XlsxMeta} from '@/config/tachyon/addons/xlsx/types';
+import type {
+    CellPositionJSON,
+    ColumnJSON,
+    Options,
+    XlsxMeta,
+    XlsxWorkerMetrics
+} from '@/config/tachyon/addons/xlsx/types';
 
 /** 가져오기 복원용 메타 정보를 기록하는 숨김 시트 이름입니다. */
 const META_SHEET_NAME = '_tachyon_meta';
@@ -138,9 +144,7 @@ async function read(file: File, columns: Array<ColumnJSON>): Promise<Array<Recor
     let meta = readMeta(workbook);
     if (!meta) {
         const headerItems = parseColumns(columns);
-        const maxDepth = headerItems
-            .filter((item) => item.visible)
-            .reduce((max, item) => Math.max(max, item.level), 0);
+        const maxDepth = headerItems.filter((item) => item.visible).reduce((max, item) => Math.max(max, item.level), 0);
         meta = {
             version: 1,
             headerRows: maxDepth,
@@ -205,9 +209,22 @@ async function read(file: File, columns: Array<ColumnJSON>): Promise<Array<Recor
  * 내부 헬퍼 함수들은 클로저를 통해 sheet, headerItems, normalizedColumns를 공유합니다.
  * @param source 내보낼 그리드 데이터 소스입니다.
  * @param options 내보내기 옵션입니다.
- * @returns 내보낸 결과(Blob)를 담은 프로미스입니다.
+ * @returns 내보낸 결과(Blob)와 구간별 소요시간을 담은 프로미스입니다.
  */
-async function write(source: GridSource, options: Options = {date: new Date(), hideHeader: false}): Promise<Blob> {
+async function write(
+    source: GridSource,
+    options: Options = {date: new Date(), hideHeader: false}
+): Promise<{blob: Blob; metrics: XlsxWorkerMetrics}> {
+    const startTime = performance.now();
+    let markTime = startTime;
+    /** 직전 측정 시점부터 지금까지의 소요시간(ms)을 반환하고 측정 시점을 갱신합니다. */
+    const lap = (): number => {
+        const now = performance.now();
+        const elapsed = now - markTime;
+        markTime = now;
+        return elapsed;
+    };
+
     const workbook = new Workbook();
     workbook.created = workbook.modified = options.date || new Date();
     const sheet = workbook.addWorksheet('Sheet1');
@@ -408,21 +425,29 @@ async function write(source: GridSource, options: Options = {date: new Date(), h
 
     //행 고정 설정
     sheet.views = [{state: 'frozen', ySplit: rowStart - 1}];
+    const header = lap();
 
     //데이터 영역 작성
     writeRows(rowStart, columnStart);
+    const rows = lap();
     //트리 계층 표현 (행 그룹 및 들여쓰기)
     writeOutline(rowStart);
+    const outline = lap();
     //셀 병합 적용
     writeMergeCells(rowStart, columnStart);
+    const merge = lap();
     //스타일 적용
     writeStyles(rowStart, columnStart);
+    const style = lap();
     //가져오기 복원용 메타 정보 기록
     writeMeta(rowStart - 1);
 
-    return workbook.xlsx.writeBuffer().then((buffer) => {
-        return new Blob([buffer], {type: 'application/octet-stream'});
-    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const zip = lap();
+    return {
+        blob: new Blob([buffer], {type: 'application/octet-stream'}),
+        metrics: {header, rows, outline, merge, style, zip, total: performance.now() - startTime}
+    };
 }
 
 /** Comlink를 통해 메인 스레드에 노출할 API 객체입니다. */

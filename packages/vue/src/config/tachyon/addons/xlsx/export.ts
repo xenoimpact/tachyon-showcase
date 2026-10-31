@@ -4,7 +4,7 @@ import {TreeGrid, GridColumn, DataGrid} from 'tachyon.vue';
 import {downloadBlob} from '@tachyon-showcase/shared';
 import XlsxWorker from '@/workers/XlsxWorker?worker';
 import type {XlsxWorkerApi} from '@/workers/XlsxWorker';
-import type {ColumnJSON, CellPositionJSON, Options} from './types';
+import type {ColumnJSON, CellPositionJSON, Options, XlsxExportMetrics, XlsxExportResult} from './types';
 
 /**
  * 자식 컬럼의 데이터 필드명을 생성합니다.
@@ -235,7 +235,7 @@ export default {
      * 그리드 데이터를 엑셀 파일(.xlsx)로 내보냅니다.
      * @param name 저장할 파일명입니다. 기본값은 'excel.xlsx'입니다.
      * @param options 내보내기 옵션입니다.
-     * @returns 내보낸 결과(Blob)를 담은 프로미스입니다.
+     * @returns 내보낸 결과(Blob)와 구간별 소요시간을 담은 프로미스입니다. 실패 시 null입니다.
      * @remarks
      * `this.grid`는 IAddon 기반 클래스에서 제공하는 속성입니다.
      * 이 Addon 객체는 등록 시 IAddon 인스턴스와 병합되므로, 메서드 내에서 this를 통해 그리드에 접근할 수 있습니다.
@@ -244,11 +244,13 @@ export default {
         this: {grid: DataGrid},
         name = 'excel.xlsx',
         options: Options = {date: new Date(), hideHeader: false}
-    ) {
+    ): Promise<XlsxExportResult | null> {
+        const startTime = performance.now();
         const columns = toColumns(this.grid);
         const mergeCells = toMergeCells(this.grid);
         const rows = toRows(this.grid);
         const levels = toLevels(this.grid);
+        const extractTime = performance.now();
 
         // Structured Clone 사전 진단 (콘솔 출력)
         try {
@@ -266,15 +268,27 @@ export default {
         } catch (err) {
             console.error('[XLSX Export] mergeCells clone 실패:', err);
         }
+        const cloneTime = performance.now();
 
         // 작업 단위로 새로운 워커 인스턴스를 생성합니다.
         const worker = new XlsxWorker();
         const api = wrap<XlsxWorkerApi>(worker);
 
         try {
-            const result = await api.write({columns, rows, mergeCells, levels}, options);
-            downloadBlob(result, name);
-            return result;
+            const {blob, metrics: workerMetrics} = await api.write({columns, rows, mergeCells, levels}, options);
+            const endTime = performance.now();
+            downloadBlob(blob, name);
+            const metrics: XlsxExportMetrics = {
+                rowCount: rows.length,
+                fileSize: blob.size,
+                extract: extractTime - startTime,
+                clone: cloneTime - extractTime,
+                // 워커 생성·데이터 전송·결과 수신은 직접 잴 수 없어 전체 왕복에서 워커 내부 시간을 뺀 값으로 계산합니다.
+                transfer: Math.max(0, endTime - cloneTime - workerMetrics.total),
+                worker: workerMetrics,
+                total: endTime - startTime
+            };
+            return {blob, metrics};
         } catch (error) {
             console.error('엑셀 파일을 생성하는 중 오류가 발생했습니다:', error);
         } finally {
