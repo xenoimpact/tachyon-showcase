@@ -34,10 +34,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
+      # pnpm-lock.yaml을 저장소에서 관리하지 않으므로 lockfile 없이 설치합니다.
+      # (CI 환경에서 pnpm은 기본적으로 lockfile을 요구하므로 --no-frozen-lockfile을 명시합니다.)
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build Vue application
         run: pnpm build
